@@ -1,5 +1,6 @@
 FROM node:24.15.0-bookworm-slim@sha256:4e6b70dd6cbfc88c8157ba19aa3d9f9cce6ba4703576d55459e45efcbc9c5f5d AS frontend
 WORKDIR /build
+ENV NODE_OPTIONS=--max-old-space-size=256
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY frontend/index.html ./
@@ -13,6 +14,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     BTP_RELEASE_DESCRIPTOR=/app/release/descriptor.json BTP_FRONTEND_DIR=/app/frontend/dist \
     BTP_ALLOW_FIXTURE=0
 WORKDIR /app
+COPY --from=frontend /build/dist ./frontend/dist
 COPY requirements-data.lock requirements-model.lock requirements-app.lock ./
 RUN python -m pip install --no-cache-dir --only-binary=:all: --index-url https://pypi.org/simple -r requirements-app.lock && python -m pip check
 COPY backend ./backend
@@ -25,7 +27,6 @@ ARG ARTIFACT_MODE=release
 ARG ARTIFACT_VERSION
 ARG CODE_VERSION
 RUN python -m scripts.package_release validate-bundle --mode "$ARTIFACT_MODE" --context /app --code-version "$CODE_VERSION" --artifact-version "$ARTIFACT_VERSION"
-COPY --from=frontend /build/dist ./frontend/dist
 RUN groupadd --gid 10001 btp && useradd --uid 10001 --gid 10001 --no-create-home --shell /usr/sbin/nologin btp && mkdir -p /tmp/btp && chown 10001:10001 /tmp/btp && chmod -R a-w /app && chmod 1777 /tmp/btp
 ENV BTP_CODE_VERSION=$CODE_VERSION
 LABEL org.opencontainers.image.title="Beyond the Pass" \
