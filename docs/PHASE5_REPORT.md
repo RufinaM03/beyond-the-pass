@@ -1,5 +1,38 @@
 # Phase 5: packaging and credential-free CI
 
+## Resumption: real release verified (2026-10-19)
+
+User closed apps/restarted PC and opened Docker. Initial preflight: Linux x86_64 engine ready, RAM 2.55 GiB / available commit 3.44 GiB, C: 14.76 GiB / D: 59.98 GiB free. Resumed without real training, data downloads, raw scans, feature expansion or AWS.
+
+**Real-release image and acceptance:** `beyond-the-pass:phase5-real`, local Docker image ID `sha256:ef69b2d2b4ac3e75d32744b745318e88e85e921cdfcec01004f139406f6f801f`, reported size **899,190,202 bytes (~857.53 MiB)**. One measured start-to-ready **25.040 s** (includes container creation/API polling on this Windows Desktop host, 1 CPU cap); one Docker stats observation **166.2 MiB / 512 MiB**. Not peaks, production sizing guarantees or direct comparisons with the differently hosted fixture image. UID/GID10001, one Uvicorn worker, readonly root/SQLite, bounded disposable tmpfs, dropped capabilities and no-new-privileges checked. Health/readiness/version, production frontend/static assets/deep links/API-asset 404s, **all 200 real HTTP predictions**, deterministic ranking, zero/overcapacity, validation/unknown/insufficient states, 200-vs-936 scope, unchanged saved metrics and aggregate-only index history pass. SQLite writes denied. Verification container stopped/removed; none left running. Evidence: `data/tmp/container-release.json`, `phase5-real-smoke.log`, `phase5-build-real-final.log`.
+
+### Numeric portability diagnosis, not a changed model
+
+First resumed production build reached its strict prediction gate and failed. A clearly labelled diagnostic-only image ran the original trusted loader/inference across all 200 real cases: **199 bit-identical, one score differing by 3.552713678800501e-15 = 2 IEEE-754 ULPs**; every other field/type/schema/explanation term identical (`data/tmp/phase5-numeric-diagnostic.json`). This is machine-precision cross-platform numerical rounding, not a model/data/feature/metric change. No exact math-library operation is inferred beyond that measured difference.
+
+The backend now permits only **two adjacent binary64 representable steps in the score field**, using ordered float bit distance. Everything else is compared exactly, including types and all explanation terms. Artifact checksums/sizes/dependency/schema/version checks still precede loading and remain exact, so this cannot accept a changed/corrupted snapshot or bundle. Neither original scores nor serialized artifacts were rounded/rewritten. Queue ranking remains on original stored scores; prediction returns the same full-precision Phase 3 inference. Same-platform exact assertions are preserved. New synthetic tests accept at most 2 ULPs in either direction and reject 3, any explanation/metadata/type/key change, NaN and invalid scores. Readiness reports rounding count/delta/policy; the final real Linux container independently reports exactly one such case. **59 Python tests + 2 frontend tests pass**; Windows real integration remains 200 bit-identical agreements. The unchanged deeper verifier passes serially (`data/tmp/phase5-final-preserved-verification.log`): 6,642 preserved labels, 902-row preprocessing, 936 predictions/metrics and all 200 snapshots/source hashes. Original manifest remains `56846f43cfc8e23f809d16b27d85b144a8d634f8fa42870d2e6f59df7531fa14`.
+
+### Current context, operations and remaining CI follow-up
+
+Use **`data/package/phase5-real-portable`**: 29 files / **711,115 bytes**, source digest `febb635ed5a9efbaf5ae1418dc16a1e9da098fba4214cb4f98b8fedd79f307aa`, packaged runtime revision `f668daf9447f2f97175c7355a9388f47354b2b75`. Original contexts remain historical; do not use the old strict `phase5-real-linux` as current instructions. Operator-script/document updates do not change the runtime sources recorded in this image.
+
+An offline/cache-only experiment failed closed because `--network=none` changed BuildKit RUN cache keys; removed that temporary option. No dependency substitutions. Confirmed zero running containers before a Desktop restart (not factory reset) to release temporary VM memory. Restart CLI reported unexpected termination, but subsequent engine info succeeded and RAM/commit recovered to 3.74/3.13 GiB. Normal cached build then succeeded. No reset, manual prune, deletion of existing images/volumes, storage relocation or system-setting command was issued. The diagnostic image remains explicitly labelled `diagnostic-not-release`, not deployable evidence. Final observed C:/D: free space 39.23/59.94 GiB; RAM/commit 3.18/1.64 GiB. No attribution is made for unrelated free-space changes.
+
+Cold-build host preflight stays 2 GiB RAM/commit. **Smoke-only** host preflight is 1 GiB: hard 512 MiB container cap plus measured ~177 MiB host verifier and reserve. It never installs dependencies/builds an image. Disk reserves remain 5 GiB; no data/model/test-validity guard is bypassed. Resource observations are not universal capacity limits.
+
+```powershell
+.\scripts\container.ps1 -Command Validate -Mode release -Context data/package/phase5-real-portable
+.\scripts\container.ps1 -Command Build -Mode release -Context data/package/phase5-real-portable -Image beyond-the-pass:phase5-real -StorageConfirmed
+.\scripts\container.ps1 -Command Verify -Mode release -Context data/package/phase5-real-portable -Image beyond-the-pass:phase5-real
+docker run --rm --name btp-local --read-only --tmpfs /tmp/btp:rw,noexec,nosuid,size=64m,mode=1777 --memory 512m --cpus 1 --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 -p 127.0.0.1:8000:8000 beyond-the-pass:phase5-real
+```
+
+Open `http://127.0.0.1:8000`; readiness `/api/ready`, versions `/api/versions`. Foreground run stops with Ctrl+C, or `docker stop --time 25 btp-local`. Verification has already stopped its own container; these commands start a new one. Keep local-only binding; no public deployment/authentication claim.
+
+Earlier native Node24 [CI run succeeded](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39277821612). The [new portability-code run](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39280918052) remains queued without an assigned runner. [Official GitHub Status](https://www.githubstatus.com/) reports Actions degraded performance / “Incident with Actions and Pages”. Thus the latest revision's **remote rerun is pending**, not fabricated as green; local real-container acceptance and prior remote CI success are independently evidenced. Do not weaken tests or change runners/billing simply to mask the queue. No monitoring automation or Phase 6 AWS work created.
+
+## Earlier observations (historical; superseded where noted)
+
 ## Latest remote CI evidence
 
 Verified native Node24-action [run 39277821612](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39277821612) **succeeded** at commit `290790c`: complete 56-test Python suite, two frontend tests/build, synthetic staging, production rejection, amd64 fixture image and all smoke checks. No legacy Node20 warning remains. Fixture image **637,664,535 bytes**, start-to-ready **2.850 s**, one memory observation **135.2 MiB / 512 MiB**; verification container stopped. Evidence `data/tmp/phase5-remote-ci-v6.log` and `remote-container-fixture-v6.json`. No real artifact or secret was uploaded. These remain synthetic software checks, not real model performance or real-release container verification.

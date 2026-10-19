@@ -43,6 +43,8 @@ Implemented HTTP mapping: scored/insufficient 200, invalid/unsupported 422, unav
 
 ## Deterministic explanations
 
+Phase 5 Linux portability validation found one of 200 scores differing from its Windows export by **2 binary64 ULPs (3.552713678800501e-15)**, with every other field and all explanation terms identical. Artifact identity/checksums remain exact. Stored-vs-runtime comparison now allows **only the score field** at most 2 ordered IEEE-754 representable steps; all other fields/types/terms remain exact. No model/preprocessing/artifact/score rewriting or broad decimal tolerance. Same-platform bit-identical tests remain. Readiness adds `score_rounding_cases`, `max_score_delta`, and `agreement_policy`; full-precision inference and original stored-score deterministic ranking remain unchanged. A third ULP, changed explanation or metadata is rejected. This is a numerical portability contract, not a calibration claim.
+
 `explanation.intercept_log_odds + sum(explanation.terms[].log_odds_contribution)` reconstructs the model margin; sigmoid ×100 reconstructs the score. Terms are frozen coefficients times standardized/imputed current inputs (and learned missing indicators), relative to training-centered transformed values. They are associations, not causes, mechanical diagnoses or proof of identical-part failure. Keep all terms when presenting a mathematical decomposition; a shortened display must not claim omitted terms are zero. No GenAI feature is implemented.
 
 Recurrence is a **separate descriptive panel**: earlier recorded normal brakes advisories/failures, number of observed prior tests and observed-history days. Its data carries `model_input=false`, `predictive_value="unvalidated"`, and `prior_absence_confirmed=false`. Absence of a record is not confirmed absence before 2022. A repeated family advisory does not establish ignored repair or the same physical part. Changing this panel must not change a score.
@@ -64,7 +66,7 @@ Open through `mode=ro&immutable=1` and `PRAGMA query_only=ON`; file is marked re
 | Method / path | Contract |
 | --- | --- |
 | `GET /api/health` | Liveness, even if artifacts unavailable. |
-| `GET /api/ready` | 200 only after trusted load, schema/version validation and exact agreement for every stored case prediction; otherwise 503. |
+| `GET /api/ready` | 200 only after trusted load, schema/version validation and every stored prediction passing the declared score-only 2-ULP / otherwise-exact comparison policy; otherwise 503. |
 | `GET /api/versions` | Model/data/API versions, manifest digest, demo/evaluation counts, historical as-of and history start. 503 when unverified. |
 | `GET /api/cases` | `{items,total,limit,offset,scope}`; date descending then case-ID ascending. Optional ISO `date_from`/`date_to`, inclusive and ordered. |
 | `GET /api/cases/{case_id}` | Unique index-inspection case with index inputs, fresh frozen prediction, separate descriptive history, history boundary/resolution and as-of. No source vehicle ID or subsequent outcome. |

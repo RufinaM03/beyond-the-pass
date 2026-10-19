@@ -42,6 +42,8 @@ The local data layer now includes a separate verified 2024 monthly-CSV adapter, 
 
 ## Phase 5 local packaging / credential-free CI
 
+Latest acceptance supersedes the earlier capacity blocker below: real Linux amd64 release image built and all 200 HTTP predictions/readonly smoke checks passed. Machine-precision portability permits only score differences up to 2 ULPs; original hashes, schema, all non-score fields/explanation terms and Phase 3 inference stay exact. Observed startup 25.040 s and 166.2 MiB container memory are measurements, not ECS capacity guarantees. Earlier remote CI succeeded; latest rerun queued during reported GitHub Actions degradation. Full evidence/current commands: `docs/PHASE5_REPORT.md`. No AWS provisioning.
+
 Bounded staging copies only approved serving files into an ignored, checksum-verified context. Pinned multi-stage Linux amd64 image builds React and installs locked Python 3.12, runs one non-root Uvicorn worker, readonly SQLite and disposable temp storage. Production validation rejects explicitly synthetic fixtures; PR CI requires neither real artifacts nor DVSA/AWS credentials. Actual remote fixture image/test smoke runs succeeded; local real-image build is pending host commit capacity after a safe cancellation. No AWS/CloudFormation resources, cloud deployment job or image registry push added. The one-image ECS/X86_64 design and domain/cost approval gates remain intact. See `docs/PHASE5_REPORT.md` for actual evidence and remaining acceptance work.
 
 ## Implemented Phase 4 local application

@@ -2,6 +2,8 @@
 
 | ID | Decision | Status / reason |
 | --- | --- | --- |
+| D21 | Explicit numeric portability agreement for the frozen score, not a model change. | Actual Linux audit: 199 identical cases, one 2-ULP score delta. Only that field permits at most 2 binary64 steps; all hashes, terms/metadata/types and existing exact same-platform tests preserved. |
+| D22 | Separate cold-build and bounded-smoke capacity profiles. | Builds require 2 GiB available host RAM/commit; smoke requires 1 GiB for its hard 512 MiB container plus ~177 MiB host verifier/reserve. No system settings or artifact-validity checks changed. |
 | D18 | Package one Linux amd64 image, matching planned ECS X86_64. | Pinned official base digests, Python 3.12 locks, one non-root Uvicorn worker; no AWS provisioning in Phase 5. |
 | D19 | Stage only allowlisted serving files under ignored data/package; reject fixtures in production validation. | Real SHA/version preserved; explicit synthetic fixture mode for credential-free PR container tests, never real performance evidence. |
 | D20 | Create private RufinaM03/beyond-the-pass and run code-only GitHub CI. | User authorized name/privacy/description; no data/artifact/credential upload or cloud deployment. Remote success requires actual run evidence. |

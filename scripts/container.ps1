@@ -6,8 +6,7 @@ param(
     [string] $Mode = 'release',
     [string] $Context,
     [string] $Image = 'beyond-the-pass:local',
-    [switch] $StorageConfirmed,
-    [switch] $CachedOnly
+    [switch] $StorageConfirmed
 )
 
 $ErrorActionPreference = 'Stop'
@@ -41,9 +40,9 @@ try {
     Invoke-Checked $pythonPath @('-c', 'import sys; assert sys.version_info[:2] == (3, 12), sys.version')
     if ($Command -in @('Build', 'Verify')) {
         $memory = Get-CimInstance Win32_OperatingSystem
-        $minimum = if ($Command -eq 'Verify' -or $CachedOnly) { 1GB } else { 2GB }
+        $minimum = if ($Command -eq 'Verify') { 1GB } else { 2GB }
         if ($memory.FreeVirtualMemory * 1KB -lt $minimum -or $memory.FreePhysicalMemory * 1KB -lt $minimum) {
-            throw "Insufficient available Windows commit/RAM: $($minimum / 1GB) GiB required for this profile. Cold builds require 2 GiB; offline cached builds and 512 MiB smoke containers require 1 GiB. No settings are changed."
+            throw "Insufficient Windows commit/RAM: builds require 2 GiB; bounded smoke verification requires 1 GiB (512 MiB container plus host verifier). No settings are changed."
         }
         foreach ($drive in @('C', 'D')) {
             if ((Get-PSDrive $drive).Free -lt 5GB) { throw "Less than 5 GiB free on ${drive}:; do not build until storage is reviewed." }
@@ -58,9 +57,7 @@ try {
             Get-PSDrive C,D | Format-Table Name,Used,Free
             Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'validate', '--mode', $Mode, '--context', $Context)
             $package = Get-Content (Join-Path $Context 'package-manifest.json') -Raw | ConvertFrom-Json
-            $buildArguments = @('build', '--platform', 'linux/amd64', '--build-arg', "ARTIFACT_MODE=$Mode", '--build-arg', "ARTIFACT_VERSION=$($package.artifact_version)", '--build-arg', "CODE_VERSION=$($package.code_version)", '-t', $Image, $Context)
-            if ($CachedOnly) { $buildArguments += '--network=none' }
-            Invoke-Checked 'docker' $buildArguments
+            Invoke-Checked 'docker' @('build', '--platform', 'linux/amd64', '--build-arg', "ARTIFACT_MODE=$Mode", '--build-arg', "ARTIFACT_VERSION=$($package.artifact_version)", '--build-arg', "CODE_VERSION=$($package.code_version)", '-t', $Image, $Context)
         }
         'Verify' { Invoke-Checked $pythonPath @('-m', 'scripts.container_check', '--mode', $Mode, '--context', $Context, '--image', $Image, '--output', "data/tmp/container-$Mode.json") }
     }
