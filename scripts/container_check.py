@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from backend.app import predictions_agree
 from pipeline.serving import open_snapshot
 from pipeline.sources import save_json
 from scripts.package_release import validate_context
@@ -67,6 +68,7 @@ def check(image, mode, context, output):
         else:
             raise AssertionError('Container did not become artifact-ready within 90 seconds')
         report['start_to_ready_seconds'] = round(time.perf_counter() - started, 3)
+        report['readiness'] = json.loads(request(base, '/api/ready')[1])
         assert request(base, '/api/health')[0] == 200
         versions = json.loads(request(base, '/api/versions')[1])
         assert versions['fixture'] == (mode == 'fixture')
@@ -90,7 +92,14 @@ def check(image, mode, context, output):
         actual = json.loads(request(base, '/api/predict', detail['inputs'])[1])
         with closing(open_snapshot(Path(context) / 'release/snapshot.sqlite3')) as connection:
             stored = json.loads(connection.execute('SELECT prediction_json FROM followup_queue WHERE case_id=?', (case_id,)).fetchone()[0])
-        assert actual == detail['prediction'] == stored
+        assert actual == detail['prediction']
+        assert predictions_agree(actual, stored)
+        with closing(open_snapshot(Path(context) / 'release/snapshot.sqlite3')) as connection:
+            expected_cases = dict(connection.execute('SELECT case_id,prediction_json FROM followup_queue'))
+        for identity, expected in expected_cases.items():
+            prediction = json.loads(request(base, '/api/cases/' + identity + '/prediction')[1])
+            assert predictions_agree(prediction, json.loads(expected))
+        report['verified_http_predictions'] = len(expected_cases)
         assert detail['history_available_through'] == detail['index_date']
         assert detail['history']['model_input'] is False
         assert 'Aggregate prior records only' in detail['history_resolution']

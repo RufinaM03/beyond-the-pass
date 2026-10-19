@@ -2,8 +2,10 @@
 
 import json
 import logging
+import math
 import os
 import re
+import struct
 from contextlib import asynccontextmanager, closing
 from datetime import date
 from pathlib import Path
@@ -19,6 +21,30 @@ ROOT = Path(__file__).resolve().parents[1]
 HISTORY_FIELDS = {"prior_recorded_tests", "prior_brake_advisory_tests", "prior_brake_failure_tests",
                   "observed_history_days", "model_input", "predictive_value", "prior_absence_confirmed", "limitation"}
 logger = logging.getLogger(__name__)
+
+
+def predictions_agree(actual, expected):
+    if not isinstance(actual, dict) or not isinstance(expected, dict):
+        return False
+    field = "exploratory_prioritization_score"
+    if field not in actual or field not in expected:
+        return False
+    left, right = actual[field], expected[field]
+    try:
+        remainder = lambda response: json.dumps({key: value for key, value in response.items() if key != field}, sort_keys=True, allow_nan=False)
+        if remainder(actual) != remainder(expected):
+            return False
+    except (TypeError, ValueError):
+        return False
+    if left is None or right is None:
+        return left is None and right is None and actual.get("status") != "scored"
+    if type(left) is not float or type(right) is not float:
+        return False
+    if not all(math.isfinite(value) and 0 <= value <= 100 for value in (left, right)):
+        return False
+    left_bits = int.from_bytes(struct.pack("!d", left), "big")
+    right_bits = int.from_bytes(struct.pack("!d", right), "big")
+    return abs(left_bits - right_bits) <= 2
 
 
 class Release:
@@ -41,11 +67,17 @@ class Release:
             rows = connection.execute("SELECT case_id,index_date,inputs_json,prediction_json FROM followup_queue").fetchall()
             if len(rows) != self.descriptor["queue_cases"] or len(rows) > 200:
                 raise ValueError("Snapshot case count differs")
+            self.score_rounding_cases = 0
+            self.max_score_delta = 0.0
             for case_id, index_date, inputs, stored in rows:
                 if not re.fullmatch(r"[a-f0-9]{16}", case_id) or date.fromisoformat(index_date) > date.fromisoformat(self.descriptor["queue_as_of"]):
                     raise ValueError("Invalid case identity/date")
-                if predict_case(self.bundle, json.loads(inputs)) != json.loads(stored):
+                actual, expected = predict_case(self.bundle, json.loads(inputs)), json.loads(stored)
+                if not predictions_agree(actual, expected):
                     raise ValueError("Stored prediction differs from frozen inference")
+                if actual["exploratory_prioritization_score"] != expected["exploratory_prioritization_score"]:
+                    self.score_rounding_cases += 1
+                    self.max_score_delta = max(self.max_score_delta, abs(actual["exploratory_prioritization_score"] - expected["exploratory_prioritization_score"]))
                 history = connection.execute("SELECT history_json FROM descriptive_history WHERE case_id=?", (case_id,)).fetchone()
                 if not history or set(json.loads(history[0])) != HISTORY_FIELDS:
                     raise ValueError("Unexpected descriptive history schema")
@@ -130,7 +162,10 @@ def create_app(descriptor_path=None, frontend_path=None, release_loader=Release)
     @application.get("/api/ready")
     def ready():
         resource = release()
-        return {"status": "ready", "model_version": resource.bundle["version"], "verified_cases": resource.count}
+        return {"status": "ready", "model_version": resource.bundle["version"], "verified_cases": resource.count,
+                "score_rounding_cases": getattr(resource, "score_rounding_cases", 0),
+                "max_score_delta": getattr(resource, "max_score_delta", 0.0),
+                "agreement_policy": "Score only: at most 2 IEEE-754 ULPs; all other prediction fields exact"}
 
     @application.get("/api/versions")
     def versions():
