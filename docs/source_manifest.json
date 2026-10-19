@@ -1,0 +1,1259 @@
+{
+  "catalogue_url": "https://open.data.dvsa.gov.uk/mot-anonymised/index.html",
+  "retrieved_at": "2026-10-19T06:54:39.819636+00:00",
+  "catalogue_sha256": "4c21e0f4f815d8b0ab2a6882a9a9798d5fe09109ca73064f55d8ce7d670c42ba",
+  "catalogue_links": [
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_extracts_2025.zip",
+      "label": "MOT testing data results extracts (2025)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_extracts_2024.zip",
+      "label": "MOT testing data results extracts (2024)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_extracts_2025.zip",
+      "label": "MOT testing data failure item extracts (2025)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_extracts_2024.zip",
+      "label": "MOT testing data failure item extracts (2024)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/MOT+Testing+data+failure+item+(2024).zip",
+      "label": "MOT testing data failure item (2024)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/MOT+testing+data+results+(2024).zip",
+      "label": "MOT testing data results (2024)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_2023.zip",
+      "label": "MOT testing data failure item (2023)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_2023.zip",
+      "label": "MOT testing data results (2023)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_2022.zip",
+      "label": "MOT testing data failure item (2022)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_2022.zip",
+      "label": "MOT testing data results (2022)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_test_outcome_extract.csv",
+      "label": "MOT testing data MDR test outcome extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_test_type_extract.csv",
+      "label": "MOT testing data MDR test type extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_item_detail_extract.csv",
+      "label": "MOT testing data item detail extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_item_group_extract.csv",
+      "label": "MOT testing data item group extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_fuel_type_extract.csv",
+      "label": "MOT testing data MDR fuel type extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_rfr_location_extract.csv",
+      "label": "MOT testing data MDR RFR location extract"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/DfT+MOT+Anonymised+Data+Set+Content+2.docx",
+      "label": "MOT testing data user guide (pre-May 2018)"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/lookup.zip",
+      "label": "MOT testing data lookup tables"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/mot-testing-data-user-guide-v5.1.odt",
+      "label": "MOT testing data user guide (post-May 2018)"
+    },
+    {
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "label": "Open Government Licence v3.0"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_extracts_2025.zip",
+      "label": "MOT testing data results extracts (2025)",
+      "filename": "dft_test_result_extracts_2025.zip",
+      "compressed_bytes": 4835709507,
+      "etag": "\"56919f063c38796f30118731d4794d09-282\"",
+      "last_modified": "Fri, 19 Jun 2026 12:25:24 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:29.372403+00:00",
+      "status": "pending",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202501.csv",
+          "compressed_bytes": 421376936,
+          "uncompressed_bytes": 421376936,
+          "crc32": "cab631ec",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 73
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202502.csv",
+          "compressed_bytes": 394120028,
+          "uncompressed_bytes": 394120028,
+          "crc32": "aa1b93a8",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202503.csv",
+          "compressed_bytes": 474896299,
+          "uncompressed_bytes": 474896299,
+          "crc32": "61af8e0a",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202504.csv",
+          "compressed_bytes": 365166953,
+          "uncompressed_bytes": 365166953,
+          "crc32": "c5d4ec6a",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202505.csv",
+          "compressed_bytes": 365517419,
+          "uncompressed_bytes": 365517419,
+          "crc32": "7d792d70",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202506.csv",
+          "compressed_bytes": 387416174,
+          "uncompressed_bytes": 387416174,
+          "crc32": "e43e763f",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202507.csv",
+          "compressed_bytes": 409468173,
+          "uncompressed_bytes": 409468173,
+          "crc32": "86c50b85",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202508.csv",
+          "compressed_bytes": 379598621,
+          "uncompressed_bytes": 379598621,
+          "crc32": "bb7ae21f",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202509.csv",
+          "compressed_bytes": 466427395,
+          "uncompressed_bytes": 466427395,
+          "crc32": "b017d01f",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202510.csv",
+          "compressed_bytes": 467073261,
+          "uncompressed_bytes": 467073261,
+          "crc32": "20d88a0d",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202511.csv",
+          "compressed_bytes": 392724263,
+          "uncompressed_bytes": 392724263,
+          "crc32": "95459a24",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2025/dft_test_result_extract_202512.csv",
+          "compressed_bytes": 311921191,
+          "uncompressed_bytes": 311921191,
+          "crc32": "2642f4fc",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        }
+      ],
+      "uncompressed_bytes": 4835706713,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T06:55:37.621819+00:00",
+        "transferred_bytes": 12584520,
+        "scope": "central directory and first 8192 uncompressed bytes per member; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "22 June 2026",
+      "year": 2025,
+      "selection": "selected expansion candidate: paired June 2026 releases; cross-year identifiers still require validation"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_extracts_2024.zip",
+      "label": "MOT testing data results extracts (2024)",
+      "filename": "dft_test_result_extracts_2024.zip",
+      "compressed_bytes": 4797842352,
+      "etag": "\"c61dc28ee5771dada9a5633a8a2003bf-280\"",
+      "last_modified": "Fri, 19 Jun 2026 12:17:57 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:29.986583+00:00",
+      "status": "pending",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202401.csv",
+          "compressed_bytes": 424125972,
+          "uncompressed_bytes": 424125972,
+          "crc32": "da8f960c",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202402.csv",
+          "compressed_bytes": 404159340,
+          "uncompressed_bytes": 404159340,
+          "crc32": "9e7cabe8",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202403.csv",
+          "compressed_bytes": 455448924,
+          "uncompressed_bytes": 455448924,
+          "crc32": "a768d821",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202404.csv",
+          "compressed_bytes": 351362912,
+          "uncompressed_bytes": 351362912,
+          "crc32": "0ecbdf4c",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202405.csv",
+          "compressed_bytes": 351302793,
+          "uncompressed_bytes": 351302793,
+          "crc32": "29c492a6",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202406.csv",
+          "compressed_bytes": 368927461,
+          "uncompressed_bytes": 368927461,
+          "crc32": "5f8ebbc7",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202407.csv",
+          "compressed_bytes": 405482417,
+          "uncompressed_bytes": 405482417,
+          "crc32": "ebde6eb7",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202408.csv",
+          "compressed_bytes": 394562662,
+          "uncompressed_bytes": 394562662,
+          "crc32": "73ea8957",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202409.csv",
+          "compressed_bytes": 450502316,
+          "uncompressed_bytes": 450502316,
+          "crc32": "62145659",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202410.csv",
+          "compressed_bytes": 474511007,
+          "uncompressed_bytes": 474511007,
+          "crc32": "bdd10ea4",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 75
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202411.csv",
+          "compressed_bytes": 413658910,
+          "uncompressed_bytes": 413658910,
+          "crc32": "26a49872",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        },
+        {
+          "name": "dft_test_result_extracts_2024/dft_test_result_extract_202412.csv",
+          "compressed_bytes": 303794844,
+          "uncompressed_bytes": 303794844,
+          "crc32": "da83c6b2",
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 74
+        }
+      ],
+      "uncompressed_bytes": 4797839558,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T06:56:06.190429+00:00",
+        "transferred_bytes": 12584520,
+        "scope": "central directory and first 8192 uncompressed bytes per member; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "22 June 2026",
+      "year": 2024,
+      "selection": "selected expansion candidate: paired June 2026 releases; cross-year identifiers still require validation"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_extracts_2025.zip",
+      "label": "MOT testing data failure item extracts (2025)",
+      "filename": "dft_test_item_extracts_2025.zip",
+      "compressed_bytes": 4359554510,
+      "etag": "\"24717318d6a213f6ebba50ecc98520da-254\"",
+      "last_modified": "Fri, 19 Jun 2026 12:11:09 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:30.596254+00:00",
+      "status": "pending",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202501.csv",
+          "compressed_bytes": 385858982,
+          "uncompressed_bytes": 385858982,
+          "crc32": "a7523a50",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202502.csv",
+          "compressed_bytes": 358092967,
+          "uncompressed_bytes": 358092967,
+          "crc32": "8cd885d6",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202503.csv",
+          "compressed_bytes": 420912232,
+          "uncompressed_bytes": 420912232,
+          "crc32": "4c62cb37",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202504.csv",
+          "compressed_bytes": 326860384,
+          "uncompressed_bytes": 326860384,
+          "crc32": "57529f1d",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202505.csv",
+          "compressed_bytes": 315056041,
+          "uncompressed_bytes": 315056041,
+          "crc32": "20533205",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202506.csv",
+          "compressed_bytes": 333748495,
+          "uncompressed_bytes": 333748495,
+          "crc32": "c1a1dfd9",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202507.csv",
+          "compressed_bytes": 367048163,
+          "uncompressed_bytes": 367048163,
+          "crc32": "3c51ad5b",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202508.csv",
+          "compressed_bytes": 340431468,
+          "uncompressed_bytes": 340431468,
+          "crc32": "d92d1e06",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202509.csv",
+          "compressed_bytes": 413470620,
+          "uncompressed_bytes": 413470620,
+          "crc32": "63af2d05",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202510.csv",
+          "compressed_bytes": 442304300,
+          "uncompressed_bytes": 442304300,
+          "crc32": "fb3430bd",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202511.csv",
+          "compressed_bytes": 368974946,
+          "uncompressed_bytes": 368974946,
+          "crc32": "1f77db58",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2025/dft_test_item_extract_202512.csv",
+          "compressed_bytes": 286793270,
+          "uncompressed_bytes": 286793270,
+          "crc32": "99e62137",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        }
+      ],
+      "uncompressed_bytes": 4359551868,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T06:56:34.399539+00:00",
+        "transferred_bytes": 12584444,
+        "scope": "central directory and first 8192 uncompressed bytes per member; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "22 June 2026",
+      "year": 2025,
+      "selection": "selected expansion candidate: paired June 2026 releases; cross-year identifiers still require validation"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_extracts_2024.zip",
+      "label": "MOT testing data failure item extracts (2024)",
+      "filename": "dft_test_item_extracts_2024.zip",
+      "compressed_bytes": 4329520730,
+      "etag": "\"1ee6c3395517a96eceed244ed6baeb5c-253\"",
+      "last_modified": "Fri, 19 Jun 2026 12:01:36 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:31.214982+00:00",
+      "status": "pending",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202401.csv",
+          "compressed_bytes": 396700763,
+          "uncompressed_bytes": 396700763,
+          "crc32": "94a4b173",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 174
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202402.csv",
+          "compressed_bytes": 365507399,
+          "uncompressed_bytes": 365507399,
+          "crc32": "2ce65637",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202403.csv",
+          "compressed_bytes": 394934266,
+          "uncompressed_bytes": 394934266,
+          "crc32": "70bb9580",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202404.csv",
+          "compressed_bytes": 314686408,
+          "uncompressed_bytes": 314686408,
+          "crc32": "f1ba03fd",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202405.csv",
+          "compressed_bytes": 302052368,
+          "uncompressed_bytes": 302052368,
+          "crc32": "2f964d88",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202406.csv",
+          "compressed_bytes": 317847512,
+          "uncompressed_bytes": 317847512,
+          "crc32": "e74a423d",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202407.csv",
+          "compressed_bytes": 362059837,
+          "uncompressed_bytes": 362059837,
+          "crc32": "8bd2e827",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 174
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202408.csv",
+          "compressed_bytes": 352862607,
+          "uncompressed_bytes": 352862607,
+          "crc32": "2d8eb315",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202409.csv",
+          "compressed_bytes": 395449400,
+          "uncompressed_bytes": 395449400,
+          "crc32": "bc011afd",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 174
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202410.csv",
+          "compressed_bytes": 449968296,
+          "uncompressed_bytes": 449968296,
+          "crc32": "a9855caf",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202411.csv",
+          "compressed_bytes": 397862019,
+          "uncompressed_bytes": 397862019,
+          "crc32": "260c6a1a",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 174
+        },
+        {
+          "name": "dft_test_item_extracts_2024/dft_test_item_extract_202412.csv",
+          "compressed_bytes": 279587213,
+          "uncompressed_bytes": 279587213,
+          "crc32": "36300106",
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 173
+        }
+      ],
+      "uncompressed_bytes": 4329518088,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T06:57:03.074741+00:00",
+        "transferred_bytes": 12584444,
+        "scope": "central directory and first 8192 uncompressed bytes per member; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "22 June 2026",
+      "year": 2024,
+      "selection": "selected expansion candidate: paired June 2026 releases; cross-year identifiers still require validation"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/MOT+Testing+data+failure+item+(2024).zip",
+      "label": "MOT testing data failure item (2024)",
+      "filename": "MOT+Testing+data+failure+item+(2024).zip",
+      "compressed_bytes": 680168954,
+      "etag": "\"1c82385cd559dc81f4b65f4bece0fee7-40\"",
+      "last_modified": "Tue, 13 May 2025 06:55:19 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:31.718300+00:00",
+      "status": "not_selected",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "MOT Testing data failure item (2024)/",
+          "compressed_bytes": 0,
+          "uncompressed_bytes": 0,
+          "crc32": "00000000",
+          "compression_method": 0
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202401.csv",
+          "compressed_bytes": 62639666,
+          "uncompressed_bytes": 492780497,
+          "crc32": "28832b6b",
+          "compression_method": 8,
+          "first_line": "test_id,rfr_id,rfr_type_code,mot_test_rfr_location_type_id,dangerous_mark,completed_date",
+          "prefix_line_count": 174
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202401.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202403.csv",
+          "compressed_bytes": 62649422,
+          "uncompressed_bytes": 481371035,
+          "crc32": "53ef6394",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202403.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202402.csv",
+          "compressed_bytes": 57827208,
+          "uncompressed_bytes": 452237243,
+          "crc32": "d8fe38b0",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202402.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202412.csv",
+          "compressed_bytes": 43526822,
+          "uncompressed_bytes": 320742396,
+          "crc32": "e069ccd4",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202412.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202406.csv",
+          "compressed_bytes": 50214096,
+          "uncompressed_bytes": 376731914,
+          "crc32": "be8f6b2e",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202406.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202407.csv",
+          "compressed_bytes": 56862430,
+          "uncompressed_bytes": 425531486,
+          "crc32": "0f7489c4",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202407.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202405.csv",
+          "compressed_bytes": 47826156,
+          "uncompressed_bytes": 363133204,
+          "crc32": "19b569b6",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202405.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202411.csv",
+          "compressed_bytes": 61618267,
+          "uncompressed_bytes": 459043102,
+          "crc32": "73046697",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202411.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202410.csv",
+          "compressed_bytes": 69917820,
+          "uncompressed_bytes": 522160651,
+          "crc32": "4f32631d",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202410.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202404.csv",
+          "compressed_bytes": 49577650,
+          "uncompressed_bytes": 383426407,
+          "crc32": "e8868a42",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202404.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202409.csv",
+          "compressed_bytes": 62126630,
+          "uncompressed_bytes": 458246518,
+          "crc32": "d2635ec2",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202409.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT Testing data failure item (2024)/test_item_202408.csv",
+          "compressed_bytes": 55374819,
+          "uncompressed_bytes": 411574874,
+          "crc32": "a476768b",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT Testing data failure item (2024)/._test_item_202408.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "6a3bacdf",
+          "compression_method": 8
+        }
+      ],
+      "uncompressed_bytes": 5146981439,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:07:45.897155+00:00",
+        "transferred_bytes": 1051949,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "07 March 2025",
+      "year": 2024,
+      "selection": "older March 2025 alternative not selected; revision extent undocumented; do not mix with June 2026 pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/MOT+testing+data+results+(2024).zip",
+      "label": "MOT testing data results (2024)",
+      "filename": "MOT+testing+data+results+(2024).zip",
+      "compressed_bytes": 1531265132,
+      "etag": "\"d5dc2f8a00cee5c8bc98136c561b6390-90\"",
+      "last_modified": "Tue, 13 May 2025 06:55:19 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:32.199810+00:00",
+      "status": "not_selected",
+      "sha256": null,
+      "zip_members": [
+        {
+          "name": "MOT testing data results (2024)/",
+          "compressed_bytes": 0,
+          "uncompressed_bytes": 0,
+          "crc32": "00000000",
+          "compression_method": 0
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202408.csv",
+          "compressed_bytes": 126256695,
+          "uncompressed_bytes": 618359557,
+          "crc32": "af26bfac",
+          "compression_method": 8,
+          "first_line": "test_id,vehicle_id,test_date,test_class_id,test_type,test_result,test_mileage,postcode_area,make,model,colour,fuel_type,cylinder_capacity,first_use_date,completed_date",
+          "prefix_line_count": 72
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202408.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202409.csv",
+          "compressed_bytes": 142583389,
+          "uncompressed_bytes": 697962876,
+          "crc32": "fc496069",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202409.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202407.csv",
+          "compressed_bytes": 130036825,
+          "uncompressed_bytes": 643735116,
+          "crc32": "ffe2fade",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202407.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202412.csv",
+          "compressed_bytes": 95263326,
+          "uncompressed_bytes": 461414007,
+          "crc32": "7c3c9450",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202412.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202406.csv",
+          "compressed_bytes": 118768853,
+          "uncompressed_bytes": 589975953,
+          "crc32": "6542406f",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202406.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202410.csv",
+          "compressed_bytes": 150203475,
+          "uncompressed_bytes": 738264492,
+          "crc32": "d7c7351c",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202410.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202404.csv",
+          "compressed_bytes": 114110764,
+          "uncompressed_bytes": 585781764,
+          "crc32": "20b3022f",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202404.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202405.csv",
+          "compressed_bytes": 114126441,
+          "uncompressed_bytes": 573877268,
+          "crc32": "2166059f",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202405.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202411.csv",
+          "compressed_bytes": 130999034,
+          "uncompressed_bytes": 639520725,
+          "crc32": "6e2051ab",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202411.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202401.csv",
+          "compressed_bytes": 134764702,
+          "uncompressed_bytes": 701850612,
+          "crc32": "8dbd39fd",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202401.csv",
+          "compressed_bytes": 139,
+          "uncompressed_bytes": 232,
+          "crc32": "b294f082",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202402.csv",
+          "compressed_bytes": 129031124,
+          "uncompressed_bytes": 670508209,
+          "crc32": "257a72a5",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202402.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        },
+        {
+          "name": "MOT testing data results (2024)/test_result_202403.csv",
+          "compressed_bytes": 145112650,
+          "uncompressed_bytes": 746398297,
+          "crc32": "f54e90cb",
+          "compression_method": 8
+        },
+        {
+          "name": "__MACOSX/MOT testing data results (2024)/._test_result_202403.csv",
+          "compressed_bytes": 99,
+          "uncompressed_bytes": 176,
+          "crc32": "50361796",
+          "compression_method": 8
+        }
+      ],
+      "uncompressed_bytes": 7667651044,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:07:51.308140+00:00",
+        "transferred_bytes": 1051872,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "07 March 2025",
+      "year": 2024,
+      "selection": "older March 2025 alternative not selected; revision extent undocumented; do not mix with June 2026 pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_2023.zip",
+      "label": "MOT testing data failure item (2023)",
+      "filename": "dft_test_item_2023.zip",
+      "compressed_bytes": 460112607,
+      "etag": "\"6ff3b432e7608d9de2f648c6fa48ae5a-27\"",
+      "last_modified": "Mon, 12 May 2025 21:07:39 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:32.852828+00:00",
+      "status": "downloaded",
+      "sha256": "49efb9b5900fe62765c11fc479721512471fa4ebcc46593dc748f2480c1956d4",
+      "retrieved_at": "2026-10-19T06:59:22.876544+00:00",
+      "path": "data/raw/dft_test_item_2023.zip",
+      "zip_members": [
+        {
+          "name": "test_item.csv",
+          "compressed_bytes": 460112483,
+          "uncompressed_bytes": 1978006426,
+          "crc32": "842b0136",
+          "compression_method": 8,
+          "first_line": "test_id|rfr_id|rfr_type_code|location_id|dangerous_mark",
+          "prefix_line_count": 372
+        }
+      ],
+      "uncompressed_bytes": 1978006426,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:07:55.300826+00:00",
+        "transferred_bytes": 1048721,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "29 February 2024",
+      "year": 2023,
+      "selection": "selected pilot: original annual result/item pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_2023.zip",
+      "label": "MOT testing data results (2023)",
+      "filename": "dft_test_result_2023.zip",
+      "compressed_bytes": 1192881905,
+      "etag": "\"d3a065ad0314f1d1b51449d864040003-70\"",
+      "last_modified": "Mon, 12 May 2025 21:07:39 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:33.334821+00:00",
+      "status": "downloaded",
+      "sha256": "b30649b18ac3ea7b94a2264ea47d2c09815b9afb0b04257cd1bbd116949a54e9",
+      "retrieved_at": "2026-10-19T07:03:03.534715+00:00",
+      "path": "data/raw/dft_test_result_2023.zip",
+      "zip_members": [
+        {
+          "name": "test_result.csv",
+          "compressed_bytes": 1192881757,
+          "uncompressed_bytes": 3661104239,
+          "crc32": "3aa6fe30",
+          "compression_method": 9,
+          "first_line": "test_id|vehicle_id|test_date|test_class_id|test_type|test_result|test_mileage|postcode_area|make|model|colour|fuel_type|cylinder_capacity|first_use_date",
+          "prefix_line_count": 94
+        }
+      ],
+      "uncompressed_bytes": 3661104239,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:07:58.642793+00:00",
+        "transferred_bytes": 1048723,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "29 February 2024",
+      "year": 2023,
+      "selection": "selected pilot: original annual result/item pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_item_2022.zip",
+      "label": "MOT testing data failure item (2022)",
+      "filename": "dft_test_item_2022.zip",
+      "compressed_bytes": 435454025,
+      "etag": "\"8cf6af1ff3b3808352312fc6bdd26225-26\"",
+      "last_modified": "Mon, 12 May 2025 21:07:39 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:33.943026+00:00",
+      "status": "downloaded",
+      "sha256": "104e7cacd9f9655a7211fce0bd0514585b2a925f2e330287d3b3631e77139568",
+      "retrieved_at": "2026-10-19T07:04:22.551730+00:00",
+      "path": "data/raw/dft_test_item_2022.zip",
+      "zip_members": [
+        {
+          "name": "test_item.csv",
+          "compressed_bytes": 435452118,
+          "uncompressed_bytes": 1912740578,
+          "crc32": "a2a795b7",
+          "compression_method": 8,
+          "first_line": "test_id|rfr_id|rfr_type_code|location_id|dangerous_mark",
+          "prefix_line_count": 370
+        },
+        {
+          "name": "__MACOSX/._test_item.csv",
+          "compressed_bytes": 1499,
+          "uncompressed_bytes": 2137,
+          "crc32": "da3ab3b4",
+          "compression_method": 8
+        }
+      ],
+      "uncompressed_bytes": 1912742715,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:08:02.929734+00:00",
+        "transferred_bytes": 1048855,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "29 February 2023",
+      "year": 2022,
+      "selection": "selected pilot: original annual result/item pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_test_result_2022.zip",
+      "label": "MOT testing data results (2022)",
+      "filename": "dft_test_result_2022.zip",
+      "compressed_bytes": 1164809596,
+      "etag": "\"e1902778c7ba1501df1a6a1929efbd5d-68\"",
+      "last_modified": "Mon, 12 May 2025 21:07:39 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:34.402999+00:00",
+      "status": "downloaded",
+      "sha256": "9d0a015723e62f0ae27420c3240fec5483a15d5cf1e37005221b23333a2268f7",
+      "retrieved_at": "2026-10-19T07:07:28.694380+00:00",
+      "path": "data/raw/dft_test_result_2022.zip",
+      "zip_members": [
+        {
+          "name": "test_result_2022.csv",
+          "compressed_bytes": 1164809438,
+          "uncompressed_bytes": 3593668893,
+          "crc32": "22ebd897",
+          "compression_method": 9,
+          "first_line": "test_id|vehicle_id|test_date|test_class_id|test_type|test_result|test_mileage|postcode_area|make|model|colour|fuel_type|cylinder_capacity|first_use_date",
+          "prefix_line_count": 95
+        }
+      ],
+      "uncompressed_bytes": 3593668893,
+      "range_inspection": {
+        "retrieved_at": "2026-10-19T07:08:06.471306+00:00",
+        "transferred_bytes": 1048728,
+        "scope": "central directory; header prefixes only for members with first_line; not complete records or full archive checksum"
+      },
+      "catalogue_added_text": "29 February 2023",
+      "year": 2022,
+      "selection": "selected pilot: original annual result/item pair"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_test_outcome_extract.csv",
+      "label": "MOT testing data MDR test outcome extract",
+      "filename": "dft_mdr_test_outcome_extract.csv",
+      "compressed_bytes": 132,
+      "etag": "\"1b048063a40eceddf6d1de74954e39ad\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:14 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:34.992391+00:00",
+      "status": "downloaded",
+      "sha256": "6ccc36ac538f1f143d9ea692b59ee30e14fd9e3ac4255b3a890bd4557c98f791",
+      "retrieved_at": "2026-10-19T06:54:58.149794+00:00",
+      "path": "data/sources/dft_mdr_test_outcome_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_test_type_extract.csv",
+      "label": "MOT testing data MDR test type extract",
+      "filename": "dft_mdr_test_type_extract.csv",
+      "compressed_bytes": 146,
+      "etag": "\"f10a9a30e5537490e02c12605dc03007\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:14 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:35.619059+00:00",
+      "status": "downloaded",
+      "sha256": "43784d61bc384487d7046a29f85c113792bb3947d8d2023df1bc660c75c0496c",
+      "retrieved_at": "2026-10-19T06:54:59.275876+00:00",
+      "path": "data/sources/dft_mdr_test_type_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_item_detail_extract.csv",
+      "label": "MOT testing data item detail extract",
+      "filename": "dft_item_detail_extract.csv",
+      "compressed_bytes": 3610768,
+      "etag": "\"da6fe78d3903ce1149129b4e033461b8\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:13 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:36.228363+00:00",
+      "status": "downloaded",
+      "sha256": "fca4ea05fe2fc3e565f378663e2fc8239551f30db07fccec9787276d46b80386",
+      "retrieved_at": "2026-10-19T06:55:04.491880+00:00",
+      "path": "data/sources/dft_item_detail_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_item_group_extract.csv",
+      "label": "MOT testing data item group extract",
+      "filename": "dft_item_group_extract.csv",
+      "compressed_bytes": 143046,
+      "etag": "\"4ca9390b77c443816febc9492d7a28c4\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:13 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:36.843143+00:00",
+      "status": "downloaded",
+      "sha256": "8f621ffb8c441552ae1e0f6ce2e879b8886c1d8b3e0ab53d34c032e6906fb968",
+      "retrieved_at": "2026-10-19T06:55:06.149576+00:00",
+      "path": "data/sources/dft_item_group_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_fuel_type_extract.csv",
+      "label": "MOT testing data MDR fuel type extract",
+      "filename": "dft_mdr_fuel_type_extract.csv",
+      "compressed_bytes": 261,
+      "etag": "\"70af320ef31272afffa2cb46a3f6138e\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:13 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:37.457305+00:00",
+      "status": "downloaded",
+      "sha256": "1602e136655ac22f040dce9cd1e1024622901eaeb55bf2e645e690f5a8ca7d70",
+      "retrieved_at": "2026-10-19T06:55:07.262336+00:00",
+      "path": "data/sources/dft_mdr_fuel_type_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/dft_mdr_rfr_location_extract.csv",
+      "label": "MOT testing data MDR RFR location extract",
+      "filename": "dft_mdr_rfr_location_extract.csv",
+      "compressed_bytes": 2926,
+      "etag": "\"8f54a4500af65e1ea31619532ec7a354\"",
+      "last_modified": "Fri, 19 Jun 2026 12:33:13 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:38.076390+00:00",
+      "status": "downloaded",
+      "sha256": "f40c8db03ca94ed1f2f7c5175e74e307cad45ea50bec01f9b813279b9b519de1",
+      "retrieved_at": "2026-10-19T06:55:08.429217+00:00",
+      "path": "data/sources/dft_mdr_rfr_location_extract.csv",
+      "catalogue_added_text": "22 June 2026",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/DfT+MOT+Anonymised+Data+Set+Content+2.docx",
+      "label": "MOT testing data user guide (pre-May 2018)",
+      "filename": "DfT+MOT+Anonymised+Data+Set+Content+2.docx",
+      "compressed_bytes": 17869,
+      "etag": "\"f2b6a74631d8b20b7b5ac7226c892e22\"",
+      "last_modified": "Mon, 12 May 2025 20:22:56 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:38.591586+00:00",
+      "status": "not_selected",
+      "sha256": null,
+      "catalogue_added_text": "12 May 2025",
+      "year": null,
+      "selection": "not needed: pre-May-2018 guide"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/lookup.zip",
+      "label": "MOT testing data lookup tables",
+      "filename": "lookup.zip",
+      "compressed_bytes": 254053,
+      "etag": "\"e055a920731b90ed91e44fd6174787d9\"",
+      "last_modified": "Mon, 12 May 2025 20:22:56 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:39.197768+00:00",
+      "status": "downloaded",
+      "sha256": "c979049e50880f3358356e6e15fc4937cf33b147da92899ed6067b9ec313b1cb",
+      "retrieved_at": "2026-10-19T06:55:10.225704+00:00",
+      "path": "data/sources/lookup.zip",
+      "catalogue_added_text": "12 May 2025",
+      "year": null,
+      "selection": "supporting source"
+    },
+    {
+      "url": "https://edh-dvsa-data-gov-uk-files-prod.s3.eu-west-1.amazonaws.com/mot-testing-data-user-guide-v5.1.odt",
+      "label": "MOT testing data user guide (post-May 2018)",
+      "filename": "mot-testing-data-user-guide-v5.1.odt",
+      "compressed_bytes": 73606,
+      "etag": "\"a5a46f4a92c626019049be8b26594a43\"",
+      "last_modified": "Mon, 12 May 2025 20:22:56 GMT",
+      "accept_ranges": "bytes",
+      "observed_at": "2026-10-19T06:54:39.814388+00:00",
+      "status": "downloaded",
+      "sha256": "af4739c48e4e172811110fdfe0d115391d68861d7cd4e14bc04f3d9987974ad2",
+      "retrieved_at": "2026-10-19T06:55:11.724129+00:00",
+      "path": "data/sources/mot-testing-data-user-guide-v5.1.odt",
+      "catalogue_added_text": "12 May 2025",
+      "year": null,
+      "selection": "supporting source"
+    }
+  ]
+}

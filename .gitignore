@@ -1,0 +1,56 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.aws/
+credentials*
+*.pem
+*.key
+
+# Python and frontend environments and output
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+node_modules/
+frontend/data/
+dist/
+build/
+*.egg-info/
+
+# Raw data, models, snapshots, and generated reports
+data/**
+!data/README.md
+artifacts/**
+!artifacts/README.md
+*.zip
+*.gz
+*.bz2
+*.xz
+*.7z
+*.tar
+*.parquet
+*.arrow
+*.feather
+*.csv
+*.tsv
+*.sqlite
+*.sqlite3
+*.db
+*.pkl
+*.pickle
+*.joblib
+*.onnx
+
+# Local tools and logs
+.idea/
+.vscode/
+*.log
+*.tmp
+Thumbs.db
+.DS_Store

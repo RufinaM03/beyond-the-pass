@@ -1,0 +1,13 @@
+{
+  "version": "btp-exploratory-v1",
+  "status": "exploratory, retrospective; not calibrated or production validated",
+  "directory": "artifacts/releases/btp-exploratory-v1",
+  "release_manifest_sha256": "56846f43cfc8e23f809d16b27d85b144a8d634f8fa42870d2e6f59df7531fa14",
+  "bundle_sha256": "e9b1eaaeeeb2e52296f096186d342197bd224f9634788526daaf62934b86f5cf",
+  "snapshot_sha256": "671c951164d251a26905ee3248ff63ffb71b8bf8d8439722a25a663462e82a10",
+  "trust": "Repository-controlled descriptor for locally generated artifacts only; checksums are not publisher signatures. Never accept uploaded model bundles.",
+  "data_version": "dvsa-2022-2024-splitmix1000-v1",
+  "queue_as_of": "2024-12-31",
+  "queue_cases": 200,
+  "recurrence_used_by_model": false
+}

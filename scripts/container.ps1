@@ -1,0 +1,57 @@
+param(
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('Stage', 'Validate', 'Build', 'Verify')]
+    [string] $Command,
+    [ValidateSet('release', 'fixture')]
+    [string] $Mode = 'release',
+    [string] $Context,
+    [string] $Image = 'beyond-the-pass:local',
+    [switch] $StorageConfirmed
+)
+
+$ErrorActionPreference = 'Stop'
+$projectRoot = Split-Path $PSScriptRoot -Parent
+$pythonPath = Join-Path $projectRoot '.venv/Scripts/python.exe'
+if (-not $Context) { $Context = Join-Path $projectRoot "data/package/phase5-$Mode" }
+$previousLocation = Get-Location
+$settings = @{
+    TEMP = (Join-Path $projectRoot 'data/tmp')
+    TMP = (Join-Path $projectRoot 'data/tmp')
+    TMPDIR = (Join-Path $projectRoot 'data/tmp')
+    SQLITE_TMPDIR = (Join-Path $projectRoot 'data/tmp')
+    OPENBLAS_NUM_THREADS = '1'
+    OMP_NUM_THREADS = '1'
+}
+$previous = @{}
+
+function Invoke-Checked {
+    param([string] $Program, [string[]] $Arguments)
+    & $Program @Arguments
+    if ($LASTEXITCODE -ne 0) { throw "$Program failed: $LASTEXITCODE" }
+}
+
+try {
+    Set-Location -LiteralPath $projectRoot
+    foreach ($name in $settings.Keys) {
+        $previous[$name] = [Environment]::GetEnvironmentVariable($name, 'Process')
+        [Environment]::SetEnvironmentVariable($name, $settings[$name], 'Process')
+    }
+    New-Item -ItemType Directory -Force -Path $env:TEMP | Out-Null
+    Invoke-Checked $pythonPath @('-c', 'import sys; assert sys.version_info[:2] == (3, 12), sys.version')
+    switch ($Command) {
+        'Stage' { Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'stage', '--mode', $Mode, '--output', $Context) }
+        'Validate' { Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'validate', '--mode', $Mode, '--context', $Context) }
+        'Build' {
+            if (-not $StorageConfirmed) { throw 'Confirm Docker Desktop storage and C:/D: free space first; then pass -StorageConfirmed. No settings are changed by this script.' }
+            Invoke-Checked 'docker' @('info', '--format', '{{.OSType}} {{.Architecture}} {{.DockerRootDir}}')
+            Get-PSDrive C,D | Format-Table Name,Used,Free
+            Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'validate', '--mode', $Mode, '--context', $Context)
+            $package = Get-Content (Join-Path $Context 'package-manifest.json') -Raw | ConvertFrom-Json
+            Invoke-Checked 'docker' @('build', '--platform', 'linux/amd64', '--build-arg', "ARTIFACT_MODE=$Mode", '--build-arg', "ARTIFACT_VERSION=$($package.artifact_version)", '--build-arg', "CODE_VERSION=$($package.code_version)", '-t', $Image, $Context)
+        }
+        'Verify' { Invoke-Checked $pythonPath @('-m', 'scripts.container_check', '--mode', $Mode, '--context', $Context, '--image', $Image, '--output', "data/tmp/container-$Mode.json") }
+    }
+} finally {
+    foreach ($name in $previous.Keys) { [Environment]::SetEnvironmentVariable($name, $previous[$name], 'Process') }
+    Set-Location -LiteralPath $previousLocation
+}
