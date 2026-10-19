@@ -1,5 +1,9 @@
 # Phase 5: packaging and credential-free CI
 
+## Latest remote CI evidence
+
+Verified native Node24-action [run 39277821612](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39277821612) **succeeded** at commit `290790c`: complete 56-test Python suite, two frontend tests/build, synthetic staging, production rejection, amd64 fixture image and all smoke checks. No legacy Node20 warning remains. Fixture image **637,664,535 bytes**, start-to-ready **2.850 s**, one memory observation **135.2 MiB / 512 MiB**; verification container stopped. Evidence `data/tmp/phase5-remote-ci-v6.log` and `remote-container-fixture-v6.json`. No real artifact or secret was uploaded. These remain synthetic software checks, not real model performance or real-release container verification.
+
 ## Scope and status
 
 Preserves the real `btp-exploratory-v1` release, cohort, four predictors, exact inference, saved evaluation and aggregate-only history. No real training, data acquisition, source rescans, Docker reset/deletion, AWS or deployment. Fixture fitting is exclusively four invented software-test rows, visibly synthetic, never performance evidence.
@@ -14,7 +18,15 @@ User opened Desktop; it reported “starting the docker engine”. Next `docker 
 
 Subsequently Desktop status **running**, `docker info` succeeds: Linux x86_64, `/var/lib/docker`, VM memory 8,163,373,056 bytes. The observed C: VHD was updated at engine start; retained its location without configuration changes. C: 11.21–11.30 GiB free / D: 59.97 GiB. Existing unrelated images/containers/24.87 GB volume/12.09 GB cache were not deleted or modified by this work. Windows commit temporarily fell to 0.76 GiB; requested unused-app closure, held local build, then measured 1.29 GiB headroom / 2.12 GiB RAM. Plan reserves up to ~3 GiB incremental build storage with a 5 GiB C: reserve, based on the observed ~638 MB fixture image plus transient layers/cache, not a guaranteed bound. Frontend completion is now a prerequisite for Python install, serializing the memory-heavy stages; Node heap limited to 256 MiB. Local resource checks continue before build.
 
+### Actual local build resource blocker
+
+Fresh real context `data/package/phase5-real-linux` is validated, 709,257 bytes, code revision `290790c` (full revision in its package manifest). Local build `beyond-the-pass:phase5-real` successfully resolved/pulled official pinned Linux bases and built the production frontend, then reached binary Python installation. Despite serial stages, Windows available commit fell **1.29 → 0.44 → 0.30 GiB**; a subsequent shell could not create its pipeline. Cancelled this owned build rather than modify system settings or risk OOM. No real-release image size, container memory or startup timing is available; do not substitute successful CI fixture numbers. Build log `data/tmp/phase5-build-real.log`. Existing images/volumes/containers were not deleted. A concurrent deeper preserved-release verification attempt stopped at the unchanged 256 MiB commit guard before verifying; do not claim it succeeded in Phase 5. Earlier exact real HTTP/staging checks succeeded.
+
+Resume after closing unused applications and obtaining **at least 2 GiB available Windows commit and RAM**, with 5 GiB disk reserve on C:/D:. `container.ps1` now enforces this preflight for Build/Verify to prevent another under-resourced attempt. These are conservative operator gates based on the observed failure, not guaranteed capacity sizing. No model/test/data-validity checks were weakened. Retry the existing validated context (no restaging/retraining/download of data), then run real smoke; run the deeper preserved verifier separately, not concurrently with a memory-heavy build. Docker engine itself is now healthy; the outstanding blocker is host commit capacity, not a Docker daemon error.
+
 ## Reproducible release and fixture boundary
+
+After the build cancellation, ran the deeper real verifier **serially and successfully**: unchanged 6,642 labels, training-only preprocessing on 902 rows, all 936 saved predictions/metrics and 200 snapshot predictions, immutable SQLite and original source/manifest hashes. Peak working set 184,979,456 bytes; evidence `data/tmp/phase5-preserved-release-verification.log`. This supersedes the earlier concurrent capacity-blocked attempt for verification only, not real-image acceptance. Docker preflight was exercised and correctly blocked local Verify at low available commit before starting a container (`data/tmp/phase5-resource-preflight.log`).
 
 `scripts/package_release.py stage --mode release` invokes the existing `Release`/`load_release` path, verifies original manifest/files/dependency versions, all 200 frozen predictions, feature schema and frozen pipeline source hashes. Copies **only** serving code, lockfiles, frontend sources and the seven declared release files + manifest + relocated descriptor. No source archives, full cohort, evaluation row table, credentials, node_modules or venv. Builds use this small explicit context under ignored `data/package/`, not the workspace root. Context manifest checks every file's SHA256/size and rejects extras/tampering. Existing stage directories are not overwritten.
 
@@ -45,6 +57,16 @@ From `D:\2026-27\PROJECTS\BEYOND_THE_PASS`, existing Python 3.12 environment:
 ```
 
 `-StorageConfirmed` is an explicit operator acknowledgement, not an automatic storage change. Verify engine/storage/free RAM/disk before supplying it. Stage/Validate work without Docker. Scripts configure process temp paths on D: and restore them. Equivalent cross-platform CLI:
+
+To resume the already staged real build after freeing memory (no new staging needed):
+
+```powershell
+.\scripts\container.ps1 -Command Build -Mode release -Context data/package/phase5-real-linux -Image beyond-the-pass:phase5-real -StorageConfirmed
+.\scripts\container.ps1 -Command Verify -Mode release -Context data/package/phase5-real-linux -Image beyond-the-pass:phase5-real
+.\scripts\data.ps1 -Command Verify
+```
+
+Run these **sequentially**, after at least 2 GiB free RAM/commit. The final command is the preserved local deeper release/cohort verification, not a fixture check. Raw data is neither read nor acquired by these commands. The container uses the code revision recorded when staging; if application/Dockerfile sources change, choose a new context and validate it instead.
 
 ```text
 python -m scripts.package_release stage --mode fixture --output data/package/ci-fixture --code-version <actual-git-sha>

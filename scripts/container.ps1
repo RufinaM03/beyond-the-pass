@@ -38,6 +38,15 @@ try {
     }
     New-Item -ItemType Directory -Force -Path $env:TEMP | Out-Null
     Invoke-Checked $pythonPath @('-c', 'import sys; assert sys.version_info[:2] == (3, 12), sys.version')
+    if ($Command -in @('Build', 'Verify')) {
+        $memory = Get-CimInstance Win32_OperatingSystem
+        if ($memory.FreeVirtualMemory * 1KB -lt 2GB -or $memory.FreePhysicalMemory * 1KB -lt 2GB) {
+            throw 'Close unused applications first: at least 2 GiB available Windows commit and RAM required for local container work. No system settings are changed.'
+        }
+        foreach ($drive in @('C', 'D')) {
+            if ((Get-PSDrive $drive).Free -lt 5GB) { throw "Less than 5 GiB free on ${drive}:; do not build until storage is reviewed." }
+        }
+    }
     switch ($Command) {
         'Stage' { Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'stage', '--mode', $Mode, '--output', $Context) }
         'Validate' { Invoke-Checked $pythonPath @('-m', 'scripts.package_release', 'validate', '--mode', $Mode, '--context', $Context) }
