@@ -1,0 +1,17 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Optional regional ALB certificate; create only after controlled-domain approval, then validate DNS",
+  "Parameters": {
+    "DomainName": {"Type": "String", "AllowedPattern": "[A-Za-z0-9][A-Za-z0-9.-]+", "MinLength": 3},
+    "HostedZoneId": {"Type": "String", "Default": "", "Description": "Existing Route53 zone only; empty means manual DNS validation"}
+  },
+  "Conditions": {"ManagedDns": {"Fn::Not": [{"Fn::Equals": [{"Ref": "HostedZoneId"}, ""]}]}},
+  "Resources": {
+    "Certificate": {"Type": "AWS::CertificateManager::Certificate", "Properties": {
+      "DomainName": {"Ref": "DomainName"}, "ValidationMethod": "DNS",
+      "DomainValidationOptions": {"Fn::If": ["ManagedDns", [{"DomainName": {"Ref": "DomainName"}, "HostedZoneId": {"Ref": "HostedZoneId"}}], {"Ref": "AWS::NoValue"}]},
+      "Tags": [{"Key": "Project", "Value": "BeyondThePass"}]
+    }}
+  },
+  "Outputs": {"CertificateArn": {"Value": {"Ref": "Certificate"}}}
+}

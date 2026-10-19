@@ -1,6 +1,16 @@
-# Proposed architecture
+# Architecture
 
-Deployment design remains unchanged; no application or infrastructure is deployed. Phase 1 implements only the local acquisition/validation foundation described below.
+Current: local application and real Linux image verified through Phase 5. Phase 6 standard CloudFormation/manual tooling is prepared **but not approved or deployed**. `DEPLOYMENT_PLAN.md` is the current resource/cost/HTTPS review. Earlier phase descriptions below are historical.
+
+## Phase 6 deployment proposal (approval pending)
+
+Latest amendment: user approved **Option B/default CloudFront HTTPS with HTTP origin**,24h after successful deployment,$5 before-tax planning allowance, not a cap. Administrator IAM action and exact Phase 6 commit green CI remain prerequisites. Fixed role/resource names plus execution/application permission boundaries narrow scope without changing paid resources. Console steps: `IAM_SETUP.md`; origin/API audit: `PUBLIC_SURFACE_REVIEW.md`. No IAM mutation/provisioning by the agent yet. No automatic teardown; record successful acceptanceUTC+24h when it actually occurs. Earlier pending-choice descriptions below are superseded by this amendment.
+
+One unchanged Linux amd64 image contains React production build, Python3.12/FastAPI, trusted model/preprocessor and read-only 200-case SQLite. One worker/task, candidate256CPU/512MiB, separate empty application and narrowly scoped execution roles. ECR digest deployment, private versioned encrypted S3 release archive, seven-day CloudWatch logs; no training/data acquisition/runtime S3 access. Preserve original four features/936-example saved evaluation/aggregate-only history/two-ULP score policy.
+
+Dedicated VPC/two public subnets/IGW; public task IPs for outbound HTTPS without NAT. Separate SGs restrict task8000 to ALB only. ALB IP targets use artifact readiness; ECS container check uses liveness; configurable120s grace. Rolling min100/max200 with circuit-breaker rollback allows a second task temporarily. Read-only root app with task-lifetime scratch: same-image capability-dropped short root init sets scratch permissions, then only non-root app runs. Local handoff passed; Fargate execution and quarter-CPU capacity remain unverified.
+
+HTTPS choice is pending: controlled domain + Mumbai ACM + ALB443/80 redirect; or optional default CloudFront hostname, no caching (including APIs), full needed forwarding, origin prefix-list/random-header restrictions, **CloudFront→ALB HTTP explicitly requiring acceptance**. No HTTP-only success or implicit CloudFront/domain purchase. Current committed CI now green; new infrastructure changes are locally validated only. AWS auth works but required EC2/CloudFormation reads are denied; administrator-scoped access and plan approval precede any creation. Current prices, exact resources/commands and cleanup: `DEPLOYMENT_PLAN.md`, `AWS_PRICING.md`. No automated cloud deployment until Phase 7.
 
 ## Local data and training
 

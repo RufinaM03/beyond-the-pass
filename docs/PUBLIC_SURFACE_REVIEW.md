@@ -1,0 +1,26 @@
+# Public demonstration preflight review
+
+Scope: approved Option B only, 24-hour historical public-data demonstration, no authentication added and no safety/production-readiness claim. This is a code/template audit and isolated-test evidence, **not live CloudFront verification**. The trusted real image and app source remain unchanged. No AWS resources yet.
+
+## Origin and caching
+
+- ALB ingress in CloudFront mode: only TCP80 from the AWS-managed **origin-facing prefix list**, not all internet CIDRs. Default listener response403. Only the randomly named header with its random64-hex value forwards to targets. Template parameters NoEcho; parameters stay in an ignored D: file with operator-only ACL. Do not echo/get distribution configuration to terminal: it contains the origin secret. Prefix-list alone admits other CloudFront distributions; header control is also required. CloudFront overwrites the configured custom header before origin forwarding.
+- Accepted trade-off: viewer HTTPS, CloudFront→ALB HTTP, ALB→task HTTP within VPC. Origin header therefore not encrypted on the accepted origin leg; no confidentiality claim. Keep public data only, no login/credentials/payment/PII features.
+- Official CachingDisabled policy **4135ea2d-6df8-44a3-9df3-4b5a84be39ad**, TTLs0, applies to the **entire** distribution. AllViewerExceptHostHeader **b689b0a8-53d0-40ab-baf2-68738e2966ac** forwards query strings/cookies/all viewer headers except Host, replacing it with the origin Host. GET/HEAD caching policy disabled; POST/body and OPTIONS forwarded; unsupported methods still rejected by the application. Error TTL0, no SPA404 substitution. API itself returns `Cache-Control:no-store`.
+- Task SG:8000 only from ALB SG. No SSH/Exec/public direct app ingress. Non-root app, readonly root/SQLite, no AWS application permissions, no model/data write mount. Root init executes only fixed scratch chmod and exits; no ongoing privileged process.
+
+## Public API data and capabilities
+
+Allowed public surface: health/readiness; code/model/data/checksum/version metadata; bounded historical cases/queue; four-feature prediction and noncausal numeric explanation; aggregate descriptive history; saved evaluation/methodology and public OpenAPI schema. This intentionally exposes exploratory scores/coefficients, not a proprietary model-extraction boundary. No licence to claim current roadworthiness or validated safety probability.
+
+Case responses expose pseudonymous case IDs/index dates, current age/mileage/advisory counts and prior aggregate counts only. No VIN/registration/postcode/vehicle-ID export, raw DVSA files, dated fabricated timelines, subsequent row-level outcomes or customer records. Saved evaluation is aggregate936 examples, separate from200 demo cases. Check public responses against the existing contract; do not add fields to make deployment easier.
+
+No training, model upload/deserialization endpoint, file upload, admin/deploy action, shell execution, cloud credentials, S3 URL or arbitrary file download. Model deserialization is startup-only from the pinned trusted bundle after checksum/runtime checks. Only POST `/api/predict` is an application operation;16KiB request bound and strict feature payload. GET query/pagination/capacity bounds and parameterized read-only SQLite remain intact. Mutating case/queue/upload/train/deploy paths return404/405. `/docs` and `/redoc` disabled; `/api/openapi.json` is intentionally public and contains only schemas/routes, not secrets. Unknown asset/API paths remain404. Synthetic HTTP tests cover sensitive-path denial and cache headers; these tests are not real model-performance evidence.
+
+Security headers: self-only CSP (inline styles needed by existing UI), frame-ancestors none, nosniff, same-origin referrer policy. No debug endpoint or directory listing. Do not print exception logs/CloudFront secret configuration in public documentation. S3/ECR remain private, cloud IAM available only to execution/provisioning identities.
+
+**Residual risk:** unauthenticated prediction/queue requests consume CPU and bandwidth. Request-size/input bounds do not provide rate limiting, authentication or a spending cap. No WAF, load test, application rate limiter or automatic teardown added under this approval. Public-data, temporary, low-traffic scope only; stop for another review before adding sensitive users/data or additional paid protection.
+
+## After provisioning — actual checks still required
+
+Capture configuration internally, verify policy IDs/forwarding/custom-header/prefix-list restriction without logging the header. Test valid HTTPS+redirect, different capacity/query pagination reaching origin, POST actual prediction, unknown API/assets404 and `Cache-Control:no-store`; successive API requests must not return a CloudFront cache hit. Attempt direct ALB and task8000 access from outside VPC and require blocked; other distributions cannot access origin without secret. Verify known-case inference against trusted artifacts under the frozen ≤2ULP score-only policy, saved936 evaluation and aggregate-only case history, fixturefalse, exact image digest and baked runtime code. Record measured startup/standard ECS CPU/memory and network observations, not inferred production guarantees. Do not call code-audit assertions executed network checks.

@@ -59,6 +59,17 @@ class ApiTests(unittest.TestCase):
         self.client.get('/api/queue')
         self.loader.assert_called_once()
 
+    def test_public_surface_has_no_artifact_admin_or_write_endpoints(self):
+        for path in ['/release/bundle.joblib', '/release/descriptor.json', '/artifacts/releases/btp-exploratory-v1/snapshot.sqlite3',
+                     '/.env', '/.aws/credentials', '/admin', '/docs', '/redoc', '/api/upload', '/api/train', '/api/deploy']:
+            with self.subTest(path=path):
+                self.assertEqual(self.client.get(path).status_code, 404)
+        for path in ['/api/upload', '/api/train', '/api/deploy', '/api/cases', '/api/queue']:
+            self.assertIn(self.client.post(path, json={}).status_code, {404, 405})
+        for path in ['/api/queue?capacity=1', '/api/evaluation', '/api/cases?limit=1']:
+            self.assertEqual(self.client.get(path).headers['cache-control'], 'no-store')
+        self.assertEqual(self.client.post('/api/predict', json={'model_path': '/tmp/untrusted.joblib', 'code': 'print(1)'}).status_code, 422)
+
     def test_case_pagination_and_dates(self):
         first = self.client.get('/api/cases?limit=2').json()
         second = self.client.get('/api/cases?limit=2&offset=2').json()

@@ -1,0 +1,44 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Beyond the Pass: retained private release storage and immutable ECR; approval required",
+  "Resources": {
+    "Repository": {
+      "Type": "AWS::ECR::Repository",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "RepositoryName": "btp-demo-app",
+        "ImageTagMutability": "IMMUTABLE",
+        "EncryptionConfiguration": {"EncryptionType": "AES256"},
+        "ImageScanningConfiguration": {"ScanOnPush": false},
+        "LifecyclePolicy": {"LifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Expire only untagged images after 30 days\",\"selection\":{\"tagStatus\":\"untagged\",\"countType\":\"sinceImagePushed\",\"countUnit\":\"days\",\"countNumber\":30},\"action\":{\"type\":\"expire\"}}]}"},
+        "Tags": [{"Key": "Project", "Value": "BeyondThePass"}]
+      }
+    },
+    "Artifacts": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "BucketName": "btp-demo-artifacts-044854093109-ap-south-1",
+        "BucketEncryption": {"ServerSideEncryptionConfiguration": [{"ServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]},
+        "VersioningConfiguration": {"Status": "Enabled"},
+        "OwnershipControls": {"Rules": [{"ObjectOwnership": "BucketOwnerEnforced"}]},
+        "PublicAccessBlockConfiguration": {"BlockPublicAcls": true, "BlockPublicPolicy": true, "IgnorePublicAcls": true, "RestrictPublicBuckets": true},
+        "LifecycleConfiguration": {"Rules": [{"Id": "BoundOldVersions", "Status": "Enabled", "NoncurrentVersionExpiration": {"NoncurrentDays": 30}, "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]},
+        "Tags": [{"Key": "Project", "Value": "BeyondThePass"}]
+      }
+    },
+    "ArtifactsPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {"Bucket": {"Ref": "Artifacts"}, "PolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Deny", "Principal": "*", "Action": "s3:*", "Resource": [{"Fn::GetAtt": ["Artifacts", "Arn"]}, {"Fn::Sub": "${Artifacts.Arn}/*"}], "Condition": {"Bool": {"aws:SecureTransport": "false"}}}]}}
+    }
+  },
+  "Outputs": {
+    "RepositoryUri": {"Value": {"Fn::GetAtt": ["Repository", "RepositoryUri"]}},
+    "RepositoryArn": {"Value": {"Fn::GetAtt": ["Repository", "Arn"]}},
+    "ArtifactBucket": {"Value": {"Ref": "Artifacts"}}
+  }
+}

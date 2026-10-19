@@ -1,5 +1,9 @@
 # Phase 5: packaging and credential-free CI
 
+## CI resolution during Phase 6 preparation (2026-10-19)
+
+The previously queued runs completed successfully: current committed HEAD `1fb3961094a78683f25d56d65b8afa302d04a2a1` at https://github.com/RufinaM03/beyond-the-pass/actions/runs/39282257023 and image runtime revision `f668daf9447f2f97175c7355a9388f47354b2b75` at https://github.com/RufinaM03/beyond-the-pass/actions/runs/39280918052. This resolves the historical queued-CI blocker, not authorization to deploy. New Phase 6 working-tree changes have local checks only. Existing image/artifacts and all Phase 5 evidence below are preserved. See `DEPLOYMENT_PLAN.md` for approval-gated infrastructure preparation.
+
 ## Resumption: real release verified (2026-10-19)
 
 User closed apps/restarted PC and opened Docker. Initial preflight: Linux x86_64 engine ready, RAM 2.55 GiB / available commit 3.44 GiB, C: 14.76 GiB / D: 59.98 GiB free. Resumed without real training, data downloads, raw scans, feature expansion or AWS.
