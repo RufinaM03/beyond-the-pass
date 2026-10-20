@@ -1,0 +1,359 @@
+{
+  "validated_at": "2026-10-20T17:02:44.219391+00:00",
+  "policy": "infra/iam/console-view-supplement.json",
+  "sha256": "dc9f8d6bf3cd10516f5c705b6781dbb902685ab084b985e94893a8fc9dcb4913",
+  "compact_characters": 3236,
+  "actions": [
+    {
+      "action": "cloudformation:ListStacks",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "ecs:ListClusters",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "ecs:ListTaskDefinitions",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "ecs:ListTaskDefinitionFamilies",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "ecs:DescribeTaskDefinition",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "cloudwatch:ListMetrics",
+      "resource_types": [
+        "dataset"
+      ],
+      "conditions": [
+        "cloudwatch:HasAccessGrant"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "cloudwatch:GetMetricData",
+      "resource_types": [
+        "dataset"
+      ],
+      "conditions": [
+        "cloudwatch:HasAccessGrant"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "ecs:ListServices",
+      "resource_types": [],
+      "conditions": [
+        "ecs:cluster"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "cloudfront:ListDistributions",
+      "resource_types": [],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "s3:ListAllMyBuckets",
+      "resource_types": [],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "cloudformation:DescribeStackResources",
+      "resource_types": [
+        "stack"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "ecr:ListImages",
+      "resource_types": [
+        "repository"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "logs:FilterLogEvents",
+      "resource_types": [
+        "log-group"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "logs:GetLogGroupFields",
+      "resource_types": [
+        "log-group"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketAcl",
+      "resource_types": [
+        "accesspoint",
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketPolicy",
+      "resource_types": [
+        "accesspoint",
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketPolicyStatus",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketPublicAccessBlock",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketOwnershipControls",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketVersioning",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetBucketTagging",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "s3:GetEncryptionConfiguration",
+      "resource_types": [
+        "bucket"
+      ],
+      "conditions": [
+        "s3:ResourceAccount",
+        "s3:TlsVersion",
+        "s3:authType",
+        "s3:signatureAge",
+        "s3:signatureversion",
+        "s3:x-amz-content-sha256"
+      ],
+      "read_only": true
+    },
+    {
+      "action": "iam:GetUser",
+      "resource_types": [
+        "user"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:ListAttachedUserPolicies",
+      "resource_types": [
+        "user"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:ListUserPolicies",
+      "resource_types": [
+        "user"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:ListGroupsForUser",
+      "resource_types": [
+        "user"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:GetPolicy",
+      "resource_types": [
+        "policy"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:GetPolicyVersion",
+      "resource_types": [
+        "policy"
+      ],
+      "conditions": [],
+      "read_only": true
+    },
+    {
+      "action": "iam:ListPolicyVersions",
+      "resource_types": [
+        "policy"
+      ],
+      "conditions": [],
+      "read_only": true
+    }
+  ],
+  "sources": [
+    {
+      "service": "cloudformation",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/cloudformation/cloudformation.json",
+      "sha256": "5f5214d42df63c5d04964ae9086788bc060bd09d52c92a75ba51f6914385e83c",
+      "retrieved_at": "2026-10-20T16:55:54.519188+00:00"
+    },
+    {
+      "service": "cloudfront",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/cloudfront/cloudfront.json",
+      "sha256": "115c53abd7bbade3103601ac089750a5b9531d9c05829b9c17bc048aab86ae04",
+      "retrieved_at": "2026-10-20T16:55:55.259795+00:00"
+    },
+    {
+      "service": "cloudwatch",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/cloudwatch/cloudwatch.json",
+      "sha256": "1bd646aa35bc81ac2317cb8477ddaee17cdf1388f8bd3242a1e00d5b92db057d",
+      "retrieved_at": "2026-10-20T16:55:55.904979+00:00"
+    },
+    {
+      "service": "ec2",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/ec2/ec2.json",
+      "sha256": "e4ef8c6a50fab1fac407e7756a538d3ce5d60f08f1dbd169006e8db9f3ec5184",
+      "retrieved_at": "2026-10-20T16:55:56.035385+00:00"
+    },
+    {
+      "service": "ecr",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/ecr/ecr.json",
+      "sha256": "5cba67a0b6aec12c25cfceb3b043ff3325a2015edc64859b3c44744545e3663d",
+      "retrieved_at": "2026-10-20T16:55:56.784306+00:00"
+    },
+    {
+      "service": "ecs",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/ecs/ecs.json",
+      "sha256": "86af82b009eee541d2925b01c0435c325f006f066ef2a1e58b1c76be93dfaf89",
+      "retrieved_at": "2026-10-20T16:55:57.427928+00:00"
+    },
+    {
+      "service": "elasticloadbalancing",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/elasticloadbalancing/elasticloadbalancing.json",
+      "sha256": "e713090e01265b885b043787eed870796d9313138f5a94a3b20daf483e17dd56",
+      "retrieved_at": "2026-10-20T16:55:58.071025+00:00"
+    },
+    {
+      "service": "iam",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/iam/iam.json",
+      "sha256": "166a844f91e01114718faf852876c0d35629b4ead3a33d38aa063f83be7c472b",
+      "retrieved_at": "2026-10-20T16:55:58.153973+00:00"
+    },
+    {
+      "service": "logs",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/logs/logs.json",
+      "sha256": "6c48a9b51d8bc317bc52f081cdd1aedb4573d208b713e28dd22f4664701ca2f9",
+      "retrieved_at": "2026-10-20T16:55:58.371721+00:00"
+    },
+    {
+      "service": "s3",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/s3/s3.json",
+      "sha256": "cc1e013ec21e77693336485a3c0bf5c88395bfde40d81315e332640cd34137b2",
+      "retrieved_at": "2026-10-20T16:55:58.452253+00:00"
+    }
+  ],
+  "aws_policy_validation": "Administrator console review pending; no IAM policy creation or mutation executed",
+  "limitations": "Additive supplement to documented baseline; live attached policy inventory initially denied. Classic metric Resource:* and global discovery limitations explained in CONSOLE_VIEW_ACCESS.md."
+}

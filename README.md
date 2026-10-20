@@ -12,6 +12,15 @@ Read [PROJECT_STATE.md](PROJECT_STATE.md) first when resuming, then [DATA_CONTRA
 
 ## Local startup
 
+### Try a prediction (local addition; not yet deployed to AWS)
+
+Open [Try a prediction](http://127.0.0.1:8000/predict) after startup. Enter age at inspection, recorded **miles**, brake advisory count and total advisory count, and confirm the Class 4 / passed normal inspection scope. Optional inspection date only shows the nominal 9–15-calendar-month observation window. Missing age/mileage remain missing, not zero. Results show actual model contributions/imputation and extrapolation warnings; they are not calibrated failure percentages or safety assessments. No submission storage, personal details, queue rank or saved-evaluation changes. Illustrative inputs are explicitly not historical records. Details/checks: [manual prediction report](docs/MANUAL_PREDICTION_REPORT.md).
+
+```powershell
+$env:BTP_BASE_URL='http://127.0.0.1:8000'; $env:BTP_VERIFY_TARGET='local'
+node frontend/scripts/manual-browser-check.mjs
+```
+
 Phase 5 packaging/CI implementation and Docker readiness are tracked in [the packaging report](docs/PHASE5_REPORT.md). Use `scripts/container.ps1` to stage, validate, build and smoke a bounded release; never build directly from raw data directories. Real and synthetic fixture artifacts are explicitly separated. Docker/cloud execution status must be read from the checkpoint, not inferred from the Dockerfile or workflow.
 
 From `D:\2026-27\PROJECTS\BEYOND_THE_PASS` in PowerShell, using the existing D:-resident Python **3.12** virtual environment and approved ignored artifacts:

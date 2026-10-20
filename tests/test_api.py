@@ -132,6 +132,69 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(before, self.client.get('/api/evaluation').json())
         self.assertEqual(before, self.metrics)
 
+    def manual_payload(self, **changes):
+        return {"eligibility_confirmed": True, "features": self.request['features'].copy(), **changes}
+
+    def test_manual_schema_eligibility_and_input_bounds(self):
+        for changed in [{'eligibility_confirmed': False}, {'eligibility_confirmed': 1}, {'vehicle_class': 7},
+                        {'inspection_date': '2024-02-30'}, {'inspection_date': '20240101'}, {'inspection_date': '2200-01-01'}]:
+            self.assertEqual(self.client.post('/api/predict/manual', json=self.manual_payload(**changed)).status_code, 422)
+        for key, value in [('vehicle_age_years', -1), ('mileage', -1), ('mileage', 0), ('vehicle_age_years', True),
+                           ('vehicle_age_years', '12'), ('brake_advisory_count', 1.5), ('brake_advisory_count', True),
+                           ('brake_advisory_count', None), ('advisory_count', 0), ('mileage', 1e12)]:
+            body = self.manual_payload()
+            body['features'][key] = value
+            self.assertEqual(self.client.post('/api/predict/manual', json=body).status_code, 422, (key, value))
+        body = self.manual_payload()
+        body['features'].update(brake_advisory_count=3, advisory_count=2)
+        self.assertEqual(self.client.post('/api/predict/manual', json=body).status_code, 422)
+        for value in ['NaN', 'Infinity', '-Infinity']:
+            raw = json.dumps(self.manual_payload()).replace(str(self.request['features']['mileage']), value)
+            self.assertEqual(self.client.post('/api/predict/manual', content=raw, headers={'Content-Type': 'application/json'}).status_code, 422)
+        self.assertEqual(self.client.post('/api/predict/manual', content='x'*16385).status_code, 413)
+        self.assertEqual(self.client.post('/api/predict/manual', content='{}', headers={'Content-Type': 'text/plain'}).status_code, 415)
+        nested = '[' * 1200 + '0' + ']' * 1200
+        self.assertEqual(self.client.post('/api/predict/manual', content=nested, headers={'Content-Type': 'application/json'}).status_code, 422)
+
+    def test_manual_inference_matches_frozen_pipeline_and_does_not_mutate_data(self):
+        evaluation = self.client.get('/api/evaluation').json()
+        queue = self.client.get('/api/queue').json()
+        result = self.client.post('/api/predict/manual', json=self.manual_payload()).json()
+        self.assertEqual(result['prediction'], predict_case(self.bundle, self.request))
+        self.assertFalse(result['stored'])
+        self.assertFalse(result['ranked_against_historical_queue'])
+        self.assertEqual(evaluation, self.client.get('/api/evaluation').json())
+        self.assertEqual(queue, self.client.get('/api/queue').json())
+        self.assertEqual(self.client.get('/predict').status_code, 200)
+        self.assertEqual(self.client.get('/api/prediction-info').json()['mileage_unit'], 'miles')
+        numeric_counts = self.manual_payload()
+        for key in ['brake_advisory_count', 'advisory_count']:
+            numeric_counts['features'][key] = float(numeric_counts['features'][key])
+        self.assertEqual(self.client.post('/api/predict/manual', json=numeric_counts).json()['prediction'], result['prediction'])
+
+    def test_manual_missing_values_and_extrapolation(self):
+        body = self.manual_payload()
+        body['features']['mileage'] = None
+        result = self.client.post('/api/predict/manual', json=body).json()
+        self.assertIn('mileage', result['prediction']['imputed_features'])
+        self.assertEqual(result['imputed_values']['mileage'], self.bundle['pipeline']['impute'].statistics_[1])
+        body['features']['vehicle_age_years'] = None
+        self.assertEqual(self.client.post('/api/predict/manual', json=body).json()['prediction']['status'], 'insufficient_data')
+        body['features']['vehicle_age_years'] = 999
+        self.assertIn('vehicle_age_years', self.client.post('/api/predict/manual', json=body).json()['prediction']['outside_training_range'])
+
+    def test_manual_calendar_context_is_not_a_predictor_and_errors_do_not_echo_inputs(self):
+        undated = self.client.post('/api/predict/manual', json=self.manual_payload()).json()
+        dated = self.client.post('/api/predict/manual', json=self.manual_payload(inspection_date='2023-05-31')).json()
+        self.assertEqual(dated['prediction'], undated['prediction'])
+        self.assertFalse(dated['date_used_by_model'])
+        self.assertEqual(dated['nominal_followup_window'], {'start': '2024-02-29', 'end': '2024-08-31'})
+        payload = self.manual_payload(name='synthetic-private-marker')
+        response = self.client.post('/api/predict/manual', json=payload)
+        self.assertEqual(response.status_code, 422)
+        self.assertNotIn('synthetic-private-marker', response.text)
+        self.assertEqual(response.headers['cache-control'], 'no-store')
+
     def test_production_spa_does_not_swallow_api_or_asset_errors(self):
         for path in ['/', '/queue', '/evaluation', '/methodology', '/cases/' + '0' * 16]:
             response = self.client.get(path)

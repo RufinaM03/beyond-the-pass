@@ -90,6 +90,13 @@ def check(image, mode, context, output):
         case_id = rows[0]['case_id']
         detail = json.loads(request(base, '/api/cases/' + case_id)[1])
         actual = json.loads(request(base, '/api/predict', detail['inputs'])[1])
+        manual_status, manual_body = request(base, '/api/predict/manual', {'eligibility_confirmed': True, 'features': detail['inputs']['features'], 'inspection_date': '2023-05-31'})
+        manual = json.loads(manual_body)
+        assert manual_status == 200 and predictions_agree(manual['prediction'], actual)
+        assert manual['nominal_followup_window'] == {'start': '2024-02-29', 'end': '2024-08-31'}
+        assert manual['stored'] is False and manual['ranked_against_historical_queue'] is False
+        assert request(base, '/api/predict/manual', {'eligibility_confirmed': False, 'features': detail['inputs']['features']})[0] == 422
+        assert json.loads(request(base, '/api/prediction-info')[1])['mileage_unit'] == 'miles'
         with closing(open_snapshot(Path(context) / 'release/snapshot.sqlite3')) as connection:
             stored = json.loads(connection.execute('SELECT prediction_json FROM followup_queue WHERE case_id=?', (case_id,)).fetchone()[0])
         assert actual == detail['prediction']
@@ -111,7 +118,7 @@ def check(image, mode, context, output):
         missing['features']['vehicle_age_years'] = None
         assert json.loads(request(base, '/api/predict', missing)[1])['status'] == 'insufficient_data'
         assert before == json.loads(request(base, '/api/evaluation')[1])
-        for path in ['/', '/queue', '/cases/' + case_id, '/evaluation', '/methodology']:
+        for path in ['/', '/queue', '/predict', '/cases/' + case_id, '/evaluation', '/methodology']:
             status, body = request(base, path)
             assert status == 200 and b'<div id="root">' in body
         parser = Assets()

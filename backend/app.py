@@ -1,5 +1,6 @@
 """HTTP boundary around trusted Phase 3 inference; no training or source access."""
 
+import asyncio
 import json
 import logging
 import math
@@ -13,6 +14,9 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import ValidationError
+
+from backend.manual import ManualRequest, predict_manual, prediction_info
 
 from pipeline.serving import MODEL_FEATURES, load_release, open_snapshot, predict_case
 
@@ -117,13 +121,17 @@ def create_app(descriptor_path=None, frontend_path=None, release_loader=Release)
     async def boundaries(request: Request, call_next):
         if request.url.path.startswith("/api") and request.method == "POST":
             length = request.headers.get("content-length", "0")
-            if not length.isdecimal() or int(length) > 16384:
-                return JSONResponse({"detail": "Request exceeds 16 KiB limit"}, status_code=413)
+            if len(length) > 5 or not length.isdecimal() or int(length) > 16384:
+                return JSONResponse({"detail": "Request exceeds 16 KiB limit"}, status_code=413, headers={"Cache-Control": "no-store"})
             body = bytearray()
-            async for chunk in request.stream():
-                body.extend(chunk)
-                if len(body) > 16384:
-                    return JSONResponse({"detail": "Request exceeds 16 KiB limit"}, status_code=413)
+            try:
+                async with asyncio.timeout(5):
+                    async for chunk in request.stream():
+                        body.extend(chunk)
+                        if len(body) > 16384:
+                            return JSONResponse({"detail": "Request exceeds 16 KiB limit"}, status_code=413, headers={"Cache-Control": "no-store"})
+            except TimeoutError:
+                return JSONResponse({"detail": "Request body timed out"}, status_code=408, headers={"Cache-Control": "no-store"})
             request._body = bytes(body)
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
@@ -212,6 +220,23 @@ def create_app(descriptor_path=None, frontend_path=None, release_loader=Release)
             raise HTTPException(422, "Numeric feature values are not representable")
         return JSONResponse(result, status_code=422 if result["status"] in {"invalid_input", "unsupported_scope"} else 200)
 
+    @application.get("/api/prediction-info")
+    def manual_info():
+        return prediction_info(release().bundle)
+
+    @application.post("/api/predict/manual")
+    async def manual_prediction(request: Request):
+        resource = release()
+        if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json" or request.headers.get("content-encoding"):
+            raise HTTPException(415, "Use uncompressed application/json")
+        try:
+            payload = ManualRequest.model_validate_json(await request.body())
+        except ValidationError as error:
+            return JSONResponse({"detail": error.errors(include_input=False, include_context=False, include_url=False)}, status_code=422)
+        except (ValueError, UnicodeDecodeError):
+            raise HTTPException(422, "Expected a JSON manual prediction request")
+        return predict_manual(resource.bundle, payload)
+
     @application.get("/api/queue")
     def queue(capacity: int = Query(40, ge=0, le=500), limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0, le=10000)):
         resource = release()
@@ -250,7 +275,7 @@ def create_app(descriptor_path=None, frontend_path=None, release_loader=Release)
 
     @application.get("/{path:path}", include_in_schema=False)
     def frontend(path: str):
-        if path not in {"", "queue", "evaluation", "methodology"} and not re.fullmatch(r"cases/[a-f0-9]{16}", path):
+        if path not in {"", "queue", "evaluation", "methodology", "predict"} and not re.fullmatch(r"cases/[a-f0-9]{16}", path):
             raise HTTPException(404, "Page or asset not found")
         index = frontend_path / "index.html"
         if not index.is_file():

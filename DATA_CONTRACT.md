@@ -80,6 +80,10 @@ The original detail dictionary has 21,069 keys; the current one has those keys p
 The older files contain test dates but no separate completion/publication timestamp. Date-cut diagnostics therefore demonstrate retrospective event-date ordering, not a reconstruction of every historical data revision or exact real-time availability. Validate newer `completed_date` semantics and use outcome availability conservatively in later evaluation; never silently treat it as an anchor predictor.
 
 ## Processing and outputs
+### Manual prediction mileage clarification
+
+The cached official post-2018 guide (`data/sources/user-guide.txt`, line 395) states that 2022 kilometre readings were multiplied by 0.6213711922 to report miles. The frozen model trains on 2022 records; `pipeline/cohort.py::valid_mileage` retains positive source readings without further unit conversion. Manual input therefore uses **miles**, never another conversion. Exact correction semantics in later evaluation/demo releases remain independently unverified. This clarification does not alter source data, frozen features, model, metrics or snapshot. Missing age/mileage use only the existing frozen model handling; counts cannot be missing, and recurrence is not an input.
+
 
 Read sources in bounded 25,000-row pandas chunks and write sampled Parquet plus an indexed SQLite staging database on D:. Use sequential isolated archive workers, one BLAS/OpenMP thread, and periodic collection of expired pandas wrapper cycles to bound retention. A numeric sampled-test join index is capped at 200,000 tests (1.6 MB); larger samples require a disk-backed join. Recheck RAM/disk/Windows commit headroom before stages and during chunks; keep a 5 GiB disk reserve and stop below 256 MiB available RAM or commit headroom. These are stop thresholds, not a claim that chunk size imposes a hard RSS cap. Resume requires matching completed-stage provenance/counts and preserves failed output separately.
 

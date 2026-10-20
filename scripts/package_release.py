@@ -18,7 +18,7 @@ from pipeline.sources import ROOT, checksum, save_json
 
 FIXTURE_VERSION = "fixture-ci-v1"
 SOURCE_FILES = ["Dockerfile", ".dockerignore", "requirements-app.lock", "requirements-model.lock", "requirements-data.lock",
-                "backend/__init__.py", "backend/app.py", "pipeline/__init__.py", "pipeline/serving.py", "pipeline/pilot.py",
+                "backend/__init__.py", "backend/app.py", "backend/manual.py", "pipeline/__init__.py", "pipeline/serving.py", "pipeline/pilot.py",
                 "pipeline/sources.py", "scripts/package_release.py", "frontend/package.json", "frontend/package-lock.json", "frontend/index.html"]
 RELEASE_FILES = {"bundle.joblib", "feature-schema.json", "metrics.json", "model-card.md", "protocol.json",
                  "split-audit.json", "release-manifest.json", "snapshot.sqlite3", "descriptor.json"}

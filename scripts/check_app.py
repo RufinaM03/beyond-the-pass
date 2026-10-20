@@ -6,7 +6,7 @@ from contextlib import closing
 
 from fastapi.testclient import TestClient
 
-from backend.app import ROOT, app
+from backend.app import ROOT, app, predictions_agree
 from pipeline.serving import open_snapshot
 
 
@@ -28,6 +28,9 @@ def main():
             detail = client.get('/api/cases/' + row['case_id']).json()
             prediction = client.post('/api/predict', json=detail['inputs']).json()
             assert prediction == detail['prediction'] == json.loads(stored[row['case_id']])
+            manual = client.post('/api/predict/manual', json={'eligibility_confirmed': True, 'features': detail['inputs']['features']})
+            assert manual.status_code == 200, (row['case_id'], manual.json())
+            assert predictions_agree(manual.json()['prediction'], prediction)
             assert prediction['status'] == 'scored'
             assert list(detail['inputs']['features']) == ['vehicle_age_years', 'mileage', 'brake_advisory_count', 'advisory_count']
             assert detail['history_available_through'] == detail['index_date']
@@ -47,7 +50,7 @@ def main():
             assert response.status_code == 200 and '<div id="root">' in response.text
         for path in ['/api/missing', '/assets/missing.js', '/missing.css']:
             assert client.get(path).status_code == 404
-        print('REAL integration: 200 exact prediction/explanation agreements; deterministic ranking; 936-example saved evaluation unchanged; production SPA boundaries passed.')
+        print('REAL integration: 200 historical/manual prediction agreements; deterministic ranking; 936-example saved evaluation unchanged; production SPA boundaries passed.')
 
 
 if __name__ == '__main__':

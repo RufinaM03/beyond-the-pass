@@ -1,5 +1,9 @@
 # Decisions
 
+## Manual prediction addition (2026-10-20)
+
+Use only the four existing frozen predictors and inference path; manual scope confirmation is mandatory. Miles follow verified 2022 training-source correction, with later-release uncertainty disclosed. Null age/mileage use frozen handling, never zero-fill; date is calendar-window context only. No recurrence input, personal identifiers, submission persistence, manual queue ranking or evaluation changes. Preserve trusted hashes and exact numerical comparison policy. Verify local/Docker before any cloud update; existing deployment pins, publication scope, exact CI and original hosting deadline remain gates. No new AWS authorization or lifetime extension inferred.
+
 | ID | Decision | Status / reason |
 | --- | --- | --- |
 | D21 | Explicit numeric portability agreement for the frozen score, not a model change. | Actual Linux audit: 199 identical cases, one 2-ULP score delta. Only that field permits at most 2 binary64 steps; all hashes, terms/metadata/types and existing exact same-platform tests preserved. |

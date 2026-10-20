@@ -1,0 +1,110 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RegionalConsoleDiscoveryAndClassicMetricReads",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ListStacks",
+        "ecs:ListClusters",
+        "ecs:ListTaskDefinitions",
+        "ecs:ListTaskDefinitionFamilies",
+        "ecs:DescribeTaskDefinition",
+        "cloudwatch:ListMetrics",
+        "cloudwatch:GetMetricData"
+      ],
+      "Resource": "*",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-south-1"}}
+    },
+    {
+      "Sid": "ListServicesOnlyForProjectCluster",
+      "Effect": "Allow",
+      "Action": ["ecs:ListServices"],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {"aws:RequestedRegion": "ap-south-1"},
+        "ArnEquals": {"ecs:cluster": "arn:aws:ecs:ap-south-1:044854093109:cluster/btp-demo-cluster"}
+      }
+    },
+    {
+      "Sid": "GlobalConsoleDistributionAndBucketDiscovery",
+      "Effect": "Allow",
+      "Action": ["cloudfront:ListDistributions", "s3:ListAllMyBuckets"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DescribeActualProjectStackResources",
+      "Effect": "Allow",
+      "Action": ["cloudformation:DescribeStackResources"],
+      "Resource": [
+        "arn:aws:cloudformation:ap-south-1:044854093109:stack/btp-demo-app/8e6e41c0-cc4b-11f1-b4c7-02fff94de1e3",
+        "arn:aws:cloudformation:ap-south-1:044854093109:stack/btp-demo-storage/73c4fd90-cbf2-11f1-99a5-06483bdaff43"
+      ],
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-south-1"}}
+    },
+    {
+      "Sid": "ListProjectImageMetadata",
+      "Effect": "Allow",
+      "Action": ["ecr:ListImages"],
+      "Resource": "arn:aws:ecr:ap-south-1:044854093109:repository/btp-demo-app",
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-south-1"}}
+    },
+    {
+      "Sid": "FilterProjectApplicationLogs",
+      "Effect": "Allow",
+      "Action": ["logs:FilterLogEvents", "logs:GetLogGroupFields"],
+      "Resource": [
+        "arn:aws:logs:ap-south-1:044854093109:log-group:/btp/btp-demo-app",
+        "arn:aws:logs:ap-south-1:044854093109:log-group:/btp/btp-demo-app:*"
+      ],
+      "Condition": {"StringEquals": {"aws:RequestedRegion": "ap-south-1"}}
+    },
+    {
+      "Sid": "ProjectBucketConfigurationWithoutObjectContent",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketAcl",
+        "s3:GetBucketPolicy",
+        "s3:GetBucketPolicyStatus",
+        "s3:GetBucketPublicAccessBlock",
+        "s3:GetBucketOwnershipControls",
+        "s3:GetBucketVersioning",
+        "s3:GetBucketTagging",
+        "s3:GetEncryptionConfiguration"
+      ],
+      "Resource": "arn:aws:s3:::btp-demo-artifacts-044854093109-ap-south-1"
+    },
+    {
+      "Sid": "InspectOnlyDev1AccessMetadata",
+      "Effect": "Allow",
+      "Action": ["iam:GetUser", "iam:ListAttachedUserPolicies", "iam:ListUserPolicies", "iam:ListGroupsForUser"],
+      "Resource": "arn:aws:iam::044854093109:user/Dev_1"
+    },
+    {
+      "Sid": "InspectExistingProjectDeploymentPoliciesAndThisSupplement",
+      "Effect": "Allow",
+      "Action": ["iam:GetPolicy", "iam:GetPolicyVersion"],
+      "Resource": [
+        "arn:aws:iam::044854093109:policy/BtpDemoOperator",
+        "arn:aws:iam::044854093109:policy/BtpDemoNetwork",
+        "arn:aws:iam::044854093109:policy/BtpDemoServices",
+        "arn:aws:iam::044854093109:policy/BtpDemoRoles",
+        "arn:aws:iam::044854093109:policy/BtpDemoConsoleViewSupplement"
+      ]
+    },
+    {
+      "Sid": "ListOnlyProjectPolicyVersions",
+      "Effect": "Allow",
+      "Action": ["iam:ListPolicyVersions"],
+      "Resource": [
+        "arn:aws:iam::044854093109:policy/BtpDemoOperator",
+        "arn:aws:iam::044854093109:policy/BtpDemoNetwork",
+        "arn:aws:iam::044854093109:policy/BtpDemoServices",
+        "arn:aws:iam::044854093109:policy/BtpDemoRoles",
+        "arn:aws:iam::044854093109:policy/BtpDemoExecutionBoundary",
+        "arn:aws:iam::044854093109:policy/BtpDemoApplicationBoundary",
+        "arn:aws:iam::044854093109:policy/BtpDemoConsoleViewSupplement"
+      ]
+    }
+  ]
+}

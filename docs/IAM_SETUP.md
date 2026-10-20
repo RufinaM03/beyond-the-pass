@@ -1,5 +1,7 @@
 # Administrator action required — temporary Option B demo
 
+**Console-viewing update2026-10-20:** deployment is already accepted; the original provisioning instructions below are historical. For Dev_1's new console-viewing request, review `CONSOLE_VIEW_ACCESS.md` and local `infra/iam/console-view-supplement.json`. Create/attach only **BtpDemoConsoleViewSupplement** after reviewing unavoidable discovery/sensitive-configuration scope. Do not recreate/change the existing six policies, detach unrelated access or modify the application. The agent has not granted itself access; after-attachment read-only verification is pending.
+
 User approved Option B, CloudFront viewer HTTPS / HTTP origin, 24 hours after successful deployment, $5 before-tax **planning allowance, not a spending cap**. This approval does not let the agent change its own IAM access. No policies have been attached and no AWS resources provisioned by the agent. Use your separately authorized administrative identity in account **044854093109**. Never send credentials to chat or add them to GitHub.
 
 ## Exact policy files and console steps
