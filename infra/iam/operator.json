@@ -43,6 +43,7 @@
       "Sid": "RegionalDiscoveryWithoutResourceLevelAuthorization",
       "Effect": "Allow",
       "Action": [
+        "ec2:DescribeAccountAttributes",
         "ec2:DescribeAvailabilityZones",
         "ec2:DescribeManagedPrefixLists",
         "ec2:DescribeSecurityGroups",

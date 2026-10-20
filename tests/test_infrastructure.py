@@ -95,6 +95,13 @@ class InfrastructureTests(unittest.TestCase):
                     self.assertIsInstance(statement["Action"], list)
                     self.assertTrue(all("*" not in action for action in statement["Action"]))
 
+    def test_alb_account_attribute_dependency_is_readonly_and_regional(self):
+        policy = json.loads((aws_release.ROOT / "infra/iam/operator.json").read_text())
+        discovery = next(statement for statement in policy["Statement"] if statement["Sid"] == "RegionalDiscoveryWithoutResourceLevelAuthorization")
+        self.assertIn("ec2:DescribeAccountAttributes", discovery["Action"])
+        self.assertEqual(discovery["Resource"], "*")
+        self.assertEqual(discovery["Condition"]["StringEquals"]["aws:RequestedRegion"], "ap-south-1")
+
     def test_iam_role_boundaries_and_passrole_scope(self):
         role_policy = json.loads((aws_release.ROOT / "infra/iam/roles.json").read_text())
         statements = {statement["Sid"]: statement for statement in role_policy["Statement"]}
