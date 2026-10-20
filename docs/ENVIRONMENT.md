@@ -1,5 +1,9 @@
 # Environment report
 
+## Phase 6 observed update — 2026-10-20
+
+Approved temporary ECS/CloudFront demonstration is deployed and accepted; exact endpoint/checks/manual24h deadline are in `PHASE6_REPORT.md` and `PROJECT_STATE.md`. Explicit Python3.12.7/Node24.15.0 and existing Linuxamd64 image reused, no reinstalls/retraining/downloads. Pre-deployment host availableRAM4.15GiB/Windowscommit3.96GiB,C:35.94GiB/D:59.72GiB. Earlier transient paging exhaustion is documented; no system/pagefile changes or application closures. Bounded Python/browser checks succeeded using process-local D: scratch; owned verification browser closed. AWS intended account/user and exact-commit CI reverified. Administrator applied scoped IAM changes, never agent self-grants; optional direct ECS task-definition read remains denied/documented without widening. Fargate startup/service-memory observations are measured but not capacity guarantees. The following reports preserve earlier phase observations.
+
 Observed 2026-10-19, Asia/Calcutta. No credential contents inspected; no AWS account/authentication requests made.
 
 ## Phase 4 local readiness

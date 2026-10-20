@@ -1,6 +1,8 @@
 # Architecture
 
-Current: local application and real Linux image verified through Phase 5. Phase 6 standard CloudFormation/manual tooling is prepared **but not approved or deployed**. `DEPLOYMENT_PLAN.md` is the current resource/cost/HTTPS review. Earlier phase descriptions below are historical.
+Current: **Phase 6 approved temporary demonstration deployed and accepted2026-10-20**. Default CloudFront viewer HTTPS → explicitly approvedHTTP ALB origin → one LinuxX86_64 Fargate256CPU/512MiB task, unchanged single release image/model/read-only200-case snapshot. Origin-facing prefix-list + secret-header gate, task8000ALB-only, all-path caching disabled; real read-back/HTTP/browser checks pass. Task-local Haswell kernel preserves the original strict prediction agreement without changing model/image or tolerances. Private ECR/S3 and seven-day CloudWatch logs; no NAT/runtime training/GenAI. Standard CloudFormation, manual operator deployment after exact-commit CI; OIDC automated deployment is deferred to Phase7.
+
+Actual acceptance, IDs/evidence and **manual24h teardown due2026-10-21 11:42:53IST** are in `PHASE6_REPORT.md` / `PROJECT_STATE.md`; no automatic teardown. $5 before-tax allowance is not a cap. `DEPLOYMENT_PLAN.md` remains the unchanged approved resource/cost/HTTPS plan. Earlier preparation/phase descriptions below are historical, not current deployment status.
 
 ## Phase 6 deployment proposal (approval pending)
 

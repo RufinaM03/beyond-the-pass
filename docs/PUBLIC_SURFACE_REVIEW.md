@@ -1,5 +1,7 @@
 # Public demonstration preflight review
 
+**Live verification update2026-10-20:** actual CloudFront/listener/SG read-back, HTTPS/redirect/cache/query/POST tests, blocked directALB/task ports,200trusted prediction agreements and production browser flow passed. Evidence/details:`PHASE6_REPORT.md` and ignored `artifacts/reports/phase6-live-checks.json`. The following is preserved preflight evidence, superseded only in its earlier no-resources status. No secret/header values are published. No authentication/WAF/rate-limit/production-safety guarantee; only approved temporary public-data functionality.
+
 Scope: approved Option B only, 24-hour historical public-data demonstration, no authentication added and no safety/production-readiness claim. This is a code/template audit and isolated-test evidence, **not live CloudFront verification**. The trusted real image and app source remain unchanged. No AWS resources yet.
 
 ## Origin and caching
