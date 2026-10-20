@@ -183,9 +183,13 @@ def verify_service(record):
         raise ValueError("Stable is not sufficient: unexpected task definition/count, possible rollback")
     task_arns = json.loads(aws("ecs", "list-tasks", "--cluster", deployed["Cluster"], "--service-name", deployed["Service"], "--desired-status", "RUNNING", "--output", "json"))["taskArns"]
     tasks = json.loads(aws("ecs", "describe-tasks", "--cluster", deployed["Cluster"], "--tasks", *task_arns, "--output", "json"))["tasks"]
+    expected_digests = set(record["platform_digests"])
+    image_parts = record["image_uri"].rsplit("@", 1)
+    if len(image_parts) == 2 and re.fullmatch(r"sha256:[a-f0-9]{64}", image_parts[1]):
+        expected_digests.add(image_parts[1])
     for task in tasks:
         app = next(container for container in task["containers"] if container["name"] == "app")
-        if task["taskDefinitionArn"] != deployed["TaskDefinition"] or app.get("imageDigest") not in record["platform_digests"] or app.get("image") != record["image_uri"] or app.get("healthStatus") != "HEALTHY":
+        if task["taskDefinitionArn"] != deployed["TaskDefinition"] or app.get("imageDigest") not in expected_digests or app.get("image") != record["image_uri"] or app.get("healthStatus") != "HEALTHY":
             raise ValueError("Running task does not match intended immutable release/health")
     targets = json.loads(aws("elbv2", "describe-target-health", "--target-group-arn", deployed["TargetGroup"], "--output", "json"))["TargetHealthDescriptions"]
     if not targets or any(target["TargetHealth"]["State"] != "healthy" for target in targets):

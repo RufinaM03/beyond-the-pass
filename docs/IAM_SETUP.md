@@ -35,6 +35,14 @@ Policy creation/attachment steps above are **for you**, not commands executed by
 
 ## Why wildcards remain
 
+### 2026-10-20 cleanup correction — administrator action required
+
+CloudFormation deletion reached `DELETE_FAILED` only for task definition `btp-demo-app-app:1`: AWS explicitly evaluates **ecs:DeregisterTaskDefinition on Resource \***. Its existing family-ARN Allow cannot authorize this operation. The [official ECS authorization reference](https://docs.aws.amazon.com/service-authorization/latest/reference/list_ecs.html) lists no supported resource type or service condition key for this action; the live service-reference JSON independently confirms that absence.
+
+Using the authorized administrative identity: **IAM → Policies → BtpDemoServices → Edit → JSON**; replace with the current `D:/2026-27/PROJECTS/BEYOND_THE_PASS/infra/iam/services.json`, review, and save as the default policy version. No changes to the other five policies or policy attachments are needed. Agent does not apply this policy to itself.
+
+The action moves out of the family-ARN statement into a single-action Allow with `Resource:"*"`, **Mumbai requested-region** and **CloudFormation CalledVia** conditions. Direct CLI deregistration remains unauthorized. No RunTask/ExecuteCommand/DeleteTaskDefinitions/admin permissions added; role/PassRole restrictions unchanged. IAM cannot enforce family or resource tags on this particular action. Restriction to the approved CloudFormation stack operations is an additional control, not an absolute family-level permission boundary: an operator who deliberately rewrites an approved stack template could affect other regional task definitions through it. Review this unavoidable scope before saving; do not substitute ECSFullAccess. After confirmation, retry only the existing failed stack deletion first and verify it is gone before provisioning again.
+
 | Scope | Reason / limitation |
 |---|---|
 | Resource `*` for regional describe/validation, ECS ListTasks, metrics/quotas, ECR token | These operations have no usable resource scope for the invoked discovery/list calls, or require account-level discovery. They are explicit actions with Mumbai requested-region restriction. ECS task/detail reads then restrict to this cluster/family. ECR token alone does not grant other-repository access. These reads may reveal regional resource metadata; never log credentials or broad outputs. |

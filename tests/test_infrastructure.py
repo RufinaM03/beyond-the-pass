@@ -86,6 +86,30 @@ class InfrastructureTests(unittest.TestCase):
         self.assertNotIn("AdministratorAccess", execution)
         self.assertNotIn("s3:", execution)
 
+    def test_fargate_uses_locally_verified_blas_kernel_without_relaxing_readiness(self):
+        app = self.resources["Task"]["Properties"]["ContainerDefinitions"][1]
+        self.assertIn({"Name": "OPENBLAS_CORETYPE", "Value": "Haswell"}, app["Environment"])
+        self.assertEqual(self.resources["Targets"]["Properties"]["HealthCheckPath"], "/api/ready")
+
+    def test_registry_index_or_verified_child_digest_with_exact_image_is_accepted(self):
+        index = "sha256:" + "a" * 64
+        child = "sha256:" + "b" * 64
+        image = "synthetic-registry/repository@" + index
+        deployed = {"Cluster": "synthetic-cluster", "Service": "synthetic-service", "TaskDefinition": "expected-definition", "AlbDns": "synthetic-alb", "TargetGroup": "synthetic-targets"}
+        service = {"taskDefinition": "expected-definition", "runningCount": 1, "pendingCount": 0}
+        for digest, actual_image, accepted in [(index, image, True), (child, image, True),
+                                                ("sha256:" + "c" * 64, image, False),
+                                                (index, "synthetic-other-image", False)]:
+            task = {"taskDefinitionArn": "expected-definition", "containers": [{"name": "app", "imageDigest": digest, "image": actual_image, "healthStatus": "HEALTHY"}]}
+            responses = ["", json.dumps({"services": [service]}), json.dumps({"taskArns": ["synthetic-task"]}),
+                         json.dumps({"tasks": [task]}), json.dumps({"TargetHealthDescriptions": [{"TargetHealth": {"State": "healthy"}}]})]
+            with self.subTest(digest=digest, image=actual_image), patch.object(aws_release, "outputs", return_value=deployed), patch.object(aws_release, "aws", side_effect=responses), patch("builtins.print"):
+                if accepted:
+                    aws_release.verify_service({"image_uri": image, "platform_digests": [child]})
+                else:
+                    with self.assertRaisesRegex(ValueError, "intended immutable release"):
+                        aws_release.verify_service({"image_uri": image, "platform_digests": [child]})
+
     def test_iam_policy_sizes_and_no_wildcard_allows(self):
         for path in (aws_release.ROOT / "infra/iam").glob("*.json"):
             policy = json.loads(path.read_text())
@@ -101,6 +125,14 @@ class InfrastructureTests(unittest.TestCase):
         self.assertIn("ec2:DescribeAccountAttributes", discovery["Action"])
         self.assertEqual(discovery["Resource"], "*")
         self.assertEqual(discovery["Condition"]["StringEquals"]["aws:RequestedRegion"], "ap-south-1")
+
+    def test_task_deregistration_uses_required_wildcard_only_through_regional_cloudformation(self):
+        policy = json.loads((aws_release.ROOT / "infra/iam/services.json").read_text())
+        deregistration = next(statement for statement in policy["Statement"] if "ecs:DeregisterTaskDefinition" in statement["Action"])
+        self.assertEqual(deregistration["Action"], ["ecs:DeregisterTaskDefinition"])
+        self.assertEqual(deregistration["Resource"], "*")
+        self.assertEqual(deregistration["Condition"]["StringEquals"]["aws:RequestedRegion"], "ap-south-1")
+        self.assertEqual(deregistration["Condition"]["ForAnyValue:StringEquals"]["aws:CalledVia"], ["cloudformation.amazonaws.com"])
 
     def test_iam_role_boundaries_and_passrole_scope(self):
         role_policy = json.loads((aws_release.ROOT / "infra/iam/roles.json").read_text())

@@ -10,7 +10,6 @@
         "ecs:UpdateClusterSettings",
         "ecs:DeleteCluster",
         "ecs:RegisterTaskDefinition",
-        "ecs:DeregisterTaskDefinition",
         "ecs:CreateService",
         "ecs:UpdateService",
         "ecs:DeleteService",
@@ -22,6 +21,24 @@
         "arn:aws:ecs:ap-south-1:044854093109:service/btp-demo-cluster/btp-demo-app",
         "arn:aws:ecs:ap-south-1:044854093109:task-definition/btp-demo-app-app:*"
       ],
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+          "aws:CalledVia": [
+            "cloudformation.amazonaws.com"
+          ]
+        },
+        "StringEquals": {
+          "aws:RequestedRegion": "ap-south-1"
+        }
+      }
+    },
+    {
+      "Sid": "OnlyRegionalCloudFormationTaskDeregistration",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeregisterTaskDefinition"
+      ],
+      "Resource": "*",
       "Condition": {
         "ForAnyValue:StringEquals": {
           "aws:CalledVia": [
