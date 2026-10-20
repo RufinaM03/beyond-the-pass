@@ -1,0 +1,8 @@
+{
+  "bucket": "btp-demo-artifacts-044854093109-ap-south-1",
+  "key": "releases/btp-exploratory-v1/f668daf9447f2f97175c7355a9388f47354b2b75/aws-release.tar.gz",
+  "archive_sha256": "ae9706f0175926fc38d88880315209d7ba54f83fdf5a05078cd13ba392368741",
+  "manifest_sha256": "56846f43cfc8e23f809d16b27d85b144a8d634f8fa42870d2e6f59df7531fa14",
+  "maximum_archive_bytes": 2097152,
+  "maximum_expanded_bytes": 5242880
+}

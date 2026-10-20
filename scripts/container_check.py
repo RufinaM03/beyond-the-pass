@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import subprocess
 import time
 import uuid
@@ -50,7 +51,8 @@ def check(image, mode, context, output):
     started = time.perf_counter()
     running = False
     try:
-        docker('run', '--detach', '--rm', '--name', name, '--platform', 'linux/amd64', '--read-only',
+        kernel = ['--env', 'OPENBLAS_CORETYPE=Haswell'] if os.environ.get('BTP_CONTAINER_BLAS_CORE') == 'Haswell' else []
+        docker('run', '--detach', '--rm', '--name', name, '--platform', 'linux/amd64', '--read-only', *kernel,
                '--tmpfs', '/tmp/btp:rw,noexec,nosuid,size=64m,mode=1777', '--cap-drop', 'ALL',
                '--security-opt', 'no-new-privileges', '--pids-limit', '128', '--memory', '512m', '--cpus', '1',
                '--env', 'BTP_ALLOW_FIXTURE=' + ('1' if mode == 'fixture' else '0'), '-p', '127.0.0.1::8000', image)

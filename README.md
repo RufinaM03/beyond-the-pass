@@ -4,7 +4,7 @@ Explore prioritization of passed inspections with brake advisories for follow-up
 
 ## Current status
 
-Phase 6 temporary AWS demonstration: [open the dashboard](https://d1qxms20novn1p.cloudfront.net). **Manual teardown planned for 21 October 2026, 11:42:53 IST (06:12:53 UTC); no automatic teardown exists.** Approved CloudFront viewer HTTPS → HTTP ALB → one ECS Fargate task. Resource/cost details and actual checks: [deployment report](docs/PHASE6_REPORT.md).
+AWS demonstration: [open the dashboard](https://d1qxms20novn1p.cloudfront.net). **On 21 October the user superseded the old manual cleanup deadline and requested leaving the service running while deploying Try Prediction and implementing CD. There is no automatic expiration or teardown.** Approved CloudFront viewer HTTPS → HTTP ALB → one ECS Fargate task. Ongoing hosting remains billable (approximately $1.57/day under documented assumptions, not a cap). Resource/cost details: [deployment report](docs/PHASE6_REPORT.md); current rollout/CD evidence: [CD report](docs/CD_IMPLEMENTATION_REPORT.md).
 
 **200 historical demo cases** remain separate from the **936-example saved evaluation (76 positive, 860 negative)**. All 200 live HTTP prediction agreements, deterministic ranking, origin/cache/port restrictions and 7 production browser checks pass. **80 Python / 2 frontend tests** and [exact deployment-commit CI](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39377144802) pass. Original model/cohort/metrics/versions unchanged; **recurrence prediction and calibration remain unvalidated**. No retraining, new data acquisition or source rescans. See [API contract](docs/API_CONTRACT.md), [packaging](docs/PHASE5_REPORT.md) and [local UI checks](docs/PHASE4_REPORT.md).
 

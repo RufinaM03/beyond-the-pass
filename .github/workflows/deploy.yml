@@ -1,0 +1,134 @@
+name: Deploy production
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'Full CI-passed main-history SHA containing CD tooling; blank uses current main'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: btp-production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.repository == 'RufinaM03/beyond-the-pass' &&
+      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+       (github.event_name == 'workflow_run' && vars.BTP_CD_ENABLED == 'true' && github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        github.event.workflow_run.head_branch == 'main' &&
+        (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AWS_REGION: ap-south-1
+      AWS_DEFAULT_REGION: ap-south-1
+      AWS_PAGER: ''
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_CORETYPE: Haswell
+      BTP_CONTAINER_BLAS_CORE: Haswell
+      REQUESTED_SHA: ${{ inputs.sha || github.event.workflow_run.head_sha || github.sha }}
+      TEMP: ${{ github.workspace }}/data/tmp
+      TMP: ${{ github.workspace }}/data/tmp
+      TMPDIR: ${{ github.workspace }}/data/tmp
+      SQLITE_TMPDIR: ${{ github.workspace }}/data/tmp
+      PIP_CACHE_DIR: ${{ github.workspace }}/data/cache/pip
+    steps:
+      - name: Resolve immutable checkout without shell interpolation
+        id: revision
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$REQUESTED_SHA" =~ ^[a-f0-9]{40}$ ]]; then
+            echo 'A full Git SHA is required'; exit 1
+          fi
+          echo "sha=$REQUESTED_SHA" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ steps.revision.outputs.sha }}
+          persist-credentials: false
+      - name: Prepare bounded scratch and manual replay flag
+        shell: bash
+        run: |
+          mkdir -p data/tmp data/cache/pip
+          if [[ "$GITHUB_EVENT_NAME" == 'workflow_dispatch' ]]; then
+            echo 'REPLAY_FLAG=--allow-older' >> "$GITHUB_ENV"
+          else
+            echo 'REPLAY_FLAG=' >> "$GITHUB_ENV"
+          fi
+          echo "DEPLOY_SHA=$REQUESTED_SHA" >> "$GITHUB_ENV"
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-*.lock
+      - name: Require exact successful main CI before AWS authentication
+        run: python -m scripts.cd_release gate --sha "$DEPLOY_SHA" $REPLAY_FLAG
+      - name: Short-lived main-only AWS OIDC session
+        uses: aws-actions/configure-aws-credentials@fcce761380b9c34becc2ebd00e0d8c8f4d1e1448
+        with:
+          role-to-assume: arn:aws:iam::044854093109:role/BtpProductionImageDeployment
+          role-session-name: btp-cd-${{ github.run_id }}
+          aws-region: ap-south-1
+          role-duration-seconds: 3600
+          allowed-account-ids: '044854093109'
+          mask-aws-account-id: false
+      - name: Locked serving dependencies
+        run: |
+          python -m pip install --only-binary=:all: -r requirements-app.lock
+      - name: Read and verify existing bounded artifacts (no S3 writes)
+        run: python -m scripts.cd_release hydrate
+      - name: Stage exact-commit real release
+        run: python -m scripts.package_release stage --mode release --output data/package/production --code-version "$DEPLOY_SHA"
+      - name: Build production Linux amd64 image
+        run: |
+          docker build --platform linux/amd64 --build-arg ARTIFACT_MODE=release --build-arg ARTIFACT_VERSION=btp-exploratory-v1 --build-arg CODE_VERSION="$DEPLOY_SHA" -t btp-production:release data/package/production
+      - name: Real release container acceptance; stop owned container
+        run: python -m scripts.container_check --mode release --context data/package/production --image btp-production:release --output data/tmp/cd-container.json
+      - name: Publish immutable SHA image to existing ECR
+        run: python -m scripts.cd_release publish --sha "$DEPLOY_SHA" $REPLAY_FLAG
+      - name: Preview two-resource CloudFormation change set then rolling update
+        run: python -m scripts.cd_release deploy --sha "$DEPLOY_SHA" $REPLAY_FLAG
+      - name: Actual ECS and ALB health; HTTPS prediction/evaluation smoke
+        run: python -m scripts.cd_release verify --sha "$DEPLOY_SHA"
+      - name: Deployment identity and rollback evidence
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = Path('data/tmp/production-release.json')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## Existing-environment deployment\n')
+              summary.write('Application remains running. No teardown, S3 writes or model refresh.\n')
+              if report.exists():
+                  data = json.loads(report.read_text())
+                  for key in ['commit', 'ci_url', 'image_tag', 'digest', 'change_set', 'task_definition', 'service_status', 'alb_targets', 'public_url', 'verified_utc', 'previous']:
+                      if key in data: summary.write(f'- {key}: `{data[key]}`\n')
+              else: summary.write('No publication record: deployment has not been verified.\n')
+          PY
+      - name: Retain only nonsecret deployment evidence (not artifacts/data)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: production-deployment-${{ github.run_id }}
+          path: data/tmp/production-release.json
+          if-no-files-found: ignore
+          retention-days: 30
