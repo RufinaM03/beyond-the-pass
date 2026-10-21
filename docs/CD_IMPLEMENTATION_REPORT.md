@@ -1,5 +1,9 @@
 # Application rollout and continuous deployment
 
+## Final documentation delivery uncovered build-kernel omission
+
+Main a42eeef CI39651414013 passed; automatically triggered39651680022 correctly failed closed at Docker build-time stored-prediction agreement, before ECR publication or AWS stack changes. Live6578185 remains accepted. Host/container acceptance/ECS pinned Haswell, but Dockerfile's isolated RUN validate-bundle did not inherit the runner's kernel variable. Prepared one-line image ENV pin to existing approved Haswell kernel, plus regression test. No inference/model/artifact/numerical tolerance changes; retain≤2ULP score-only/all other fields exact. This removes host-default dispatch from build validation; actual fixed Linux build and new automatic deployment must verify the diagnosis. No additional IAM or billable infrastructure. Earlier manual/automatic acceptance below remains real evidence, but final main release pending correction checks.
+
 ## Completed acceptance — Try Prediction and automatic OIDC CD
 
 Both requested tasks are verified on the existing production environment. [Manual deployment39649274769](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39649274769) succeeds at exact657818595dd02bc31de9f07c33d155340ad4e5b4 after [CI39648744687](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39648744687). Stack UPDATE_COMPLETE, task:5, one stable healthy ECS task/ALB targets, public HTTPS prediction/queue/evaluation/assets and numerical agreement checks pass. Image `sha256:ba481a7155f7f550b3b7d0933859839f846785bdfb10389d66a4a5ec732d3394`.

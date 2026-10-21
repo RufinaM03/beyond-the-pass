@@ -1,5 +1,13 @@
 # Project state
 
+## Final-push build safeguard — missing build-time BLAS pin
+
+Exact a42eeef CI39651414013 succeeded, but automatic39651680022 **FAILED before publication** in Docker RUN validate-bundle: Stored prediction differs from frozen inference. Live accepted6578185/task:5 unchanged; no ECR/stack mutation for a42. Diagnosis: runner host, container acceptance and ECS explicitly use approved Haswell kernel, but Dockerfile build-time validation ENV omitted OPENBLAS_CORETYPE, so that isolated RUN could use host-dependent default CPU dispatch. Corrected only Dockerfile ENV to **OPENBLAS_CORETYPE=Haswell**, matching existing approved serving config. No model/schema/preprocessing/metrics/data/tolerance changes; score-only≤2ULP/all other fields exact remain enforced. Added regression pinning build-validation/serving agreement. Failure log data/tmp/cd-a42-build-failure.log; actual new Linux CI/build/real acceptance/automatic deployment must pass before completion. No blind retry or weaker tests. No IAM/architecture/S3/teardown changes needed.
+
+## Final documentation push — normal automatic rollout in progress
+
+Final docs committed/pushed **a42eeefc2d09dd2412fdc85e800af6640012b5d2**. Exact **CI39651414013 SUCCESS** automatically triggered **workflow_run39651680022**, currently running. Earlier manual and automatic same-SHA acceptance remain successful. Wait for this new exact commit's final stack/health/public acceptance before final completion; then record final task/image/run locally. Do not commit this last observational update again and create an unnecessary delivery loop. No new model/application sources; only honest release/docs metadata changed. Current live6578185 remains accepted while rolling update runs.
+
 ## Completed A+B — public Try Prediction plus automatic CI→OIDC→CD
 
 **Manual39649274769 and automatic workflow_run39650767514 both SUCCESS**, exact657818595dd02bc31de9f07c33d155340ad4e5b4. Automatic was triggered by successful same-commit CI39650491631 after BTP_CD_ENABLED=true, deploy job genuinely ran. Actual OIDC/build/real acceptance/immutable-tag reuse/public checks pass; idempotent replay made no redundant stack update. Manual proves Task+Service-only rolling deployment. Final verified2026-10-21T18:16:21.022671Z, task:5/one healthy task and ALB, stack UPDATE_COMPLETE, digestba481a7155f7f550b3b7d0933859839f846785bdfb10389d66a4a5ec732d3394. Public https://d1qxms20novn1p.cloudfront.net/predict .8 manual/9 historical production-browser checks pass, screenshot inspected.105Python/4frontend/2synthetic crypto CI checks plus infrastructure/fixture-container pass; fixtures are not real model evidence. All artifacts/metrics/numerical comparison policy unchanged,200demo distinct from936evaluation.

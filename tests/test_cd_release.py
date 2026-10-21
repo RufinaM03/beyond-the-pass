@@ -13,6 +13,14 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_image_validation_uses_the_same_approved_kernel_as_serving(self):
+        dockerfile = (cd.ROOT / 'Dockerfile').read_text()
+        self.assertIn('OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 OPENBLAS_CORETYPE=Haswell', dockerfile)
+        self.assertLess(dockerfile.index('OPENBLAS_CORETYPE=Haswell'), dockerfile.index('scripts.package_release validate-bundle'))
+        template = json.loads((cd.ROOT / 'infra/application.json').read_text())
+        app = next(container for container in template['Resources']['Task']['Properties']['ContainerDefinitions'] if container['Name'] == 'app')
+        self.assertIn({'Name': 'OPENBLAS_CORETYPE', 'Value': 'Haswell'}, app['Environment'])
+
     def test_all_existing_attribute_outputs_have_audited_read_permissions(self):
         policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
         read = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ReadLoadBalancerOutputViaCloudFormation')
