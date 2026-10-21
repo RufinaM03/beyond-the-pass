@@ -1,5 +1,19 @@
 # Application rollout and continuous deployment
 
+## Immutable OIDC subject diagnosis
+
+User confirmed canonical provider ARN and audience sts.amazonaws.com. A single confirmation-based retry of bootstrap39491429174 (attempt2) still failed at AWS token validation, before ECR/S3/CloudFormation. Investigation found a confirmed mismatch: actual repository OIDC API reports `use_immutable_subject=true` and prefix `repo:RufinaM03@162699034/beyond-the-pass@1425804589`; original trust used the legacy name-only subject. [Current GitHub reference](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims) documents this new default for repositories created after15July2026. Evidence `data/tmp/github-oidc-subject.json`.
+
+Corrected exact main-only `sub` in `infra/iam/github-deploy-trust.json`, preserving issuer/audience and permission scope. Added a pre-authentication read-only OIDC contract check (existing actions:read permission) and regression test rejecting legacy/customized mismatches. Administrator must replace only BtpProductionImageDeployment trust policy with this current JSON; do not change provider, permissions, create duplicates or opt out of immutable subjects. Correction is necessary but successful AWS token validation/rollout is still unverified. Await administrator confirmation and exact new-commit CI before retry; no blind repeat run or static-key fallback.
+
+## Current remote evidence — bootstrap blocked before AWS deployment
+
+CD configuration/tooling commit **6d8275085a84fee3fc4958c913c51b9037159eda** is pushed; [exact CI39491121651 passed](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39491121651). User supplied actual role ARN **arn:aws:iam::044854093109:role/BtpProductionImageDeployment** and confirmed a newly created provider, current proposed trust/permissions, no broad policy. Workflow reuses that role, not the initial proposed name. No agent IAM mutation. Application serving source/model/artifacts unchanged;99 local Python/4frontend tests and actionlint pass.
+
+The [actual manual bootstrap CD39491429174](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39491429174) **failed** at OIDC: **"The web identity token provided could not be validated."** CI gate succeeded, but no AWS session/artifact read/image publication/change set/rollout followed. SDK retried authentication within that one failed run; no blind repeat run has been started. Dev_1 cannot read the new provider/role configuration. Administrator asked to confirm provider URL/audience before diagnosing/correcting any configuration. Public issuer discovery and JWKS are reachable and expose4RSAkeys; that is not proof of actual JWT validation by AWS. No static-key fallback or broad permission change. Failure evidence `data/tmp/cd-first-failure.log`, `github-oidc-public-check.json`.
+
+Automatic CD is bootstrap-gated by repository variable **BTP_CD_ENABLED** (currently unset). First rollout is explicit workflow_dispatch, then enable variable and prove automatic workflow_run from a fresh successful CI of the same commit. This resolves local publication memory limits without weakening guards or creating another AWS environment; exact cdd3680 serving code already passed local Docker tests. App remains original accepted production release, and **neither A nor B is complete** until actual rollout/OIDC/automatic CD acceptance. Earlier local-only/uncommitted status below is historical and superseded by the commit/run results here.
+
 ## Inspection before changes — 21 October 2026 IST
 
 - Only `.github/workflows/ci.yml` exists. PR, main push and manual CI run91 Python tests (synthetic isolated fixtures), locked frontend tests/build, Linux amd64 fixture image and readonly smoke, fixture rejection by production validator, and offline CloudFormation lint/infrastructure tests. No CD job, deployment workflow, GitHub Environment or AWS credentials in CI.

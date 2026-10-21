@@ -55,6 +55,17 @@ def identity():
     return caller["Arn"]
 
 
+def verify_oidc_subject(settings, trust):
+    prefix = settings.get("sub_claim_prefix")
+    if settings.get("use_default") is not True or not isinstance(prefix, str) or not prefix.startswith("repo:"):
+        raise ValueError("Unexpected GitHub OIDC subject customization; review exact trust before deploying")
+    expected = prefix + ":ref:refs/heads/main"
+    condition = trust["Statement"][0]["Condition"]["StringEquals"]
+    if condition.get("token.actions.githubusercontent.com:sub") != expected or condition.get("token.actions.githubusercontent.com:aud") != "sts.amazonaws.com":
+        raise ValueError("Repository OIDC subject/audience differs from the reviewed trust policy")
+    return expected
+
+
 def gate(sha, allow_older=False):
     if not re.fullmatch(r"[a-f0-9]{40}", sha):
         raise ValueError("Use a full Git SHA")
@@ -83,6 +94,9 @@ def gate(sha, allow_older=False):
     passed = {entry["name"] for entry in jobs["jobs"] if entry["conclusion"] == "success"}
     if not required <= passed:
         raise ValueError("Required CI jobs did not both succeed")
+    settings = json.loads(run(["gh", "api", "repos/" + REPO + "/actions/oidc/customization/sub"]))
+    trust = json.loads((ROOT / "infra/iam/github-deploy-trust.json").read_text())
+    verify_oidc_subject(settings, trust)
     return {"commit": sha, "ci_url": valid[0]["url"]}
 
 

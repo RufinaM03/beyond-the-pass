@@ -1,5 +1,11 @@
 # GitHub deployment identity: review before applying
 
+## Required immutable-subject correction (21 October)
+
+Actual GitHub OIDC repository settings report `use_default=true`, `use_immutable_subject=true`, prefix `repo:RufinaM03@162699034/beyond-the-pass@1425804589`. The initial legacy subject below therefore **does not match this repository**. The corrected exact trust JSON now requires `repo:RufinaM03@162699034/beyond-the-pass@1425804589:ref:refs/heads/main`, retaining the same issuer/audience/main-only restriction and adding immutable identities. No wildcard or extra repository/branch is accepted. Evidence `data/tmp/github-oidc-subject.json`; [GitHub immutable-subject documentation](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims). This is a confirmed configuration mismatch; successful AWS authentication still needs to be tested after correction.
+
+Administrator: IAM → Roles → **BtpProductionImageDeployment** → Trust relationships → Edit trust policy → replace with current `infra/iam/github-deploy-trust.json` → Update policy. **Only trust changes**; leave role permissions, provider URL/audience, other roles/policies and Dev_1 unchanged. Do not create another provider or disable immutable subjects. Agent will not modify IAM permissions/trust itself. The earlier subject examples are historical and superseded by this section.
+
 **Administrator update:** user supplied existing/created role ARN `arn:aws:iam::044854093109:role/BtpProductionImageDeployment`. The workflow reuses that exact role; no BtpGithubDeploy duplicate will be created. Provider/trust/inline-policy behavior must still be proved by actual OIDC/CD calls. The role name in the initial proposal below is historical, not an instruction to create another identity.
 
 Proposed role **BtpGithubDeploy**, account044854093109; role trust `infra/iam/github-deploy-trust.json`, permissions `infra/iam/github-deploy-permissions.json`. These files are the exact proposed JSON, not an already-created identity. Dev_1 cannot discover all OIDC providers/roles; administrator must check for/reuse an appropriate existing provider/role first. No agent self-permission change is permitted. No GitHub Environments currently exist, so branch-based subject is intentional.

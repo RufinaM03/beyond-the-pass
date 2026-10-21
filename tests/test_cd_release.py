@@ -13,6 +13,19 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_actual_immutable_subject_contract_rejects_legacy_or_customized_trust(self):
+        trust = json.loads((cd.ROOT / "infra/iam/github-deploy-trust.json").read_text())
+        settings = {"use_default": True, "use_immutable_subject": True,
+                    "sub_claim_prefix": "repo:RufinaM03@162699034/beyond-the-pass@1425804589"}
+        self.assertEqual(cd.verify_oidc_subject(settings, trust), settings["sub_claim_prefix"] + ":ref:refs/heads/main")
+        for changed in [{**settings, "use_default": False}, {**settings, "sub_claim_prefix": "repo:other@1/repository@2"}]:
+            with self.assertRaises(ValueError):
+                cd.verify_oidc_subject(changed, trust)
+        legacy = json.loads(json.dumps(trust))
+        legacy["Statement"][0]["Condition"]["StringEquals"]["token.actions.githubusercontent.com:sub"] = "repo:RufinaM03/beyond-the-pass:ref:refs/heads/main"
+        with self.assertRaises(ValueError):
+            cd.verify_oidc_subject(settings, legacy)
+
     def test_untrusted_archive_rejected_before_any_extraction(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -61,7 +74,7 @@ class CdReleaseTests(unittest.TestCase):
     def test_proposed_oidc_is_only_main_and_no_new_admin_or_s3_writes(self):
         trust = json.loads((cd.ROOT / "infra/iam/github-deploy-trust.json").read_text())
         condition = trust["Statement"][0]["Condition"]["StringEquals"]
-        self.assertEqual(condition["token.actions.githubusercontent.com:sub"], "repo:RufinaM03/beyond-the-pass:ref:refs/heads/main")
+        self.assertEqual(condition["token.actions.githubusercontent.com:sub"], "repo:RufinaM03@162699034/beyond-the-pass@1425804589:ref:refs/heads/main")
         self.assertEqual(condition["token.actions.githubusercontent.com:aud"], "sts.amazonaws.com")
         policy = json.loads((cd.ROOT / "infra/iam/github-deploy-permissions.json").read_text())
         actions = {action for entry in policy["Statement"] for action in ([entry["Action"]] if isinstance(entry["Action"], str) else entry["Action"])}
