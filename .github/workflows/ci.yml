@@ -74,6 +74,7 @@ jobs:
         run: |
           npm ci --registry=https://registry.npmjs.org
           npm test
+          node --test ../tests/oidc-diagnostic.test.mjs
           npm run build
       - name: Stage explicitly synthetic fixture only
         run: python -m scripts.package_release stage --mode fixture --output data/package/ci-fixture --code-version "$GITHUB_SHA"

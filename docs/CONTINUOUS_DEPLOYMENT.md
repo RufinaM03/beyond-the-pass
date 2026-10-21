@@ -20,6 +20,8 @@ Bootstrap uses the user-supplied `arn:aws:iam::044854093109:role/BtpProductionIm
 
 ## Trigger and inspect
 
+For a diagnosed OIDC failure, `.github/workflows/oidc-check.yml` is manual-only/main-only and does not deploy. It verifies the workflow token's signature against GitHub public JWKS and prints **only booleans, relative lifetime and STS error codes**, never the JWT, bearer token or returned AWS credentials. One regional STS authentication probe is made; only InvalidIdentityToken triggers a single global comparison probe to isolate regional/provider validation behavior. Any successful temporary credentials are discarded, not exported. This grants no new permissions and changes no AWS resources. Synthetic cryptographic tests run in CI. Normal deployment authentication retries are bounded to3; do not rerun unexplained failures blindly.
+
 ```powershell
 gh run list --workflow ci.yml --limit 3
 gh run list --workflow deploy.yml --limit 3

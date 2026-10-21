@@ -88,6 +88,7 @@ jobs:
           role-session-name: btp-cd-${{ github.run_id }}
           aws-region: ap-south-1
           role-duration-seconds: 3600
+          retry-max-attempts: 3
           allowed-account-ids: '044854093109'
           mask-aws-account-id: false
       - name: Locked serving dependencies
