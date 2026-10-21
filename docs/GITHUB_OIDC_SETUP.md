@@ -1,5 +1,9 @@
 # GitHub deployment identity: review before applying
 
+## Setup completed and verified — no further administrator action
+
+User/admin applied the reviewed settings/corrections; **actual OIDC manual deployment39649274769 and automatic workflow_run39650767514 both succeed**. Current role BtpProductionImageDeployment, immutable main-only subject, exact audience sts.amazonaws.com, no static credentials. Exact current permissions JSON is5539compactcharacters; forwarded CloudFront/ALB reads and regional AZ metadata satisfy unchanged typed parameters/output evaluation. No broad policy or agent self-grant. Existing origin configuration was never printed/persisted/rotated. Earlier correction instructions below are an incident record, **not additional changes to apply**. Future changes require evidence and scoped review, not replaying old setup steps. Current acceptance links and rollback evidence: CD_IMPLEMENTATION_REPORT.md.
+
 ## Current correction — ALB output read; all output expressions audited
 
 Deployment39647479535 passed the CloudFront output read but rolled back at **Alb.DNSName**: AWS explicitly denies **elasticloadbalancing:DescribeLoadBalancers** to BtpProductionImageDeployment with no identity-based allow. Read-only inspection identified the action, principal and attribute without emitting any full resource configuration/header. No additional CloudFront permission is proposed.

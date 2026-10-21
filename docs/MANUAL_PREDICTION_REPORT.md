@@ -1,4 +1,10 @@
-# Manual prediction: local implementation
+# Manual prediction: local and production implementation
+
+## Verified public deployment
+
+[Deployment39649274769 succeeds](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39649274769), exact657818595dd02bc31de9f07c33d155340ad4e5b4 with successful CI39648744687. Final stack UPDATE_COMPLETE; task:5/healthy ALB and actual public prediction/evaluation smoke pass. [Try the live page](https://d1qxms20novn1p.cloudfront.net/predict). Eight actual manual-browser checks and nine historical queue/case/evaluation-browser checks pass; public screenshot visually inspected. Reports `artifacts/manual-browser/aws-6578185/checks.json` and `artifacts/phase4-browser/checks.json`; earlier phase4 evidence preserved at `artifacts/phase4-browser-before-6578185`. Synthetic intercepted503 remains a browser-only error-state test, not source data or model evidence.
+
+No retraining, model/snapshot/evaluation changes, S3 writes, new services or teardown. Score comparison remains score-only≤2ULP, other fields exact. Production POST reaches existing CloudFront/ALB path, returns no-store and uses trusted frozen inference. Both queue/evaluation stay unchanged after manual submissions. Earlier local-only/uncommitted status below is historical and superseded by this verified deployment.
 
 ## Final Docker acceptance
 
