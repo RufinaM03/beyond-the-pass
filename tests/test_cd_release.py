@@ -13,6 +13,19 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_typed_availability_zone_validation_adds_only_regional_discovery(self):
+        policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
+        discovery = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ValidateExistingAvailabilityZoneParameters')
+        self.assertEqual(discovery['Action'], ['ec2:DescribeAvailabilityZones'])
+        self.assertEqual(discovery['Resource'], '*')
+        self.assertEqual(discovery['Condition'], {'StringEquals': {'aws:RequestedRegion': 'ap-south-1'}})
+        ec2_actions = {action for entry in policy['Statement'] for action in entry['Action'] if action.startswith('ec2:')}
+        self.assertEqual(ec2_actions, {'ec2:DescribeAvailabilityZones'})
+        template = json.loads((cd.ROOT / 'infra/application.json').read_text())
+        self.assertEqual(template['Parameters']['AvailabilityZoneA']['Type'], 'AWS::EC2::AvailabilityZone::Name')
+        workflow = (cd.ROOT / '.github/workflows/deploy.yml').read_text()
+        self.assertLess(workflow.index('aws ec2 describe-availability-zones'), workflow.index('Locked serving dependencies'))
+
     def test_change_set_read_is_exact_stack_scoped_without_write_name_condition(self):
         policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
         statements = {entry['Sid']: entry for entry in policy['Statement']}

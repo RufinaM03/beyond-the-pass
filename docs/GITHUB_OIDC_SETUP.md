@@ -1,5 +1,13 @@
 # GitHub deployment identity: review before applying
 
+## Required typed-parameter discovery permission — latest correction
+
+The prior DescribeChangeSet fix is **verified** by read-only diagnostic39641124076. Deployment39641279971 then accepted/executed exactly the Task/Service change set, but CloudFormation immediately rolled back with AccessDenied for **EC2 DescribeAvailabilityZones**, before any Task/Service resource-update events. Existing template parameters AvailabilityZoneA/B have type `AWS::EC2::AvailabilityZone::Name`; AWS validates them even with UsePreviousValue and no network changes. Stack UPDATE_ROLLBACK_COMPLETE, original task:2 still desired1/running1/pending0 and public readiness ready. Do not infer a failed app or remove typed validation to bypass IAM.
+
+Current permissions JSON adds **only ec2:DescribeAvailabilityZones**, Resource `*`, conditioned to `aws:RequestedRegion=ap-south-1`. [AWS EC2 authorization reference](https://docs.aws.amazon.com/service-authorization/latest/reference/list_ec2.html) lists no resource-level ARN support for this action. It exposes regional zone metadata, not instance data, secrets or network mutation. Every earlier permission including write/name/PassRole restrictions is unchanged. Deployment now preflights this read before dependencies/build; the explicitly requested read-only diagnostic also checks it. No architecture/template/model/S3/budget change or agent IAM mutation.
+
+Administrator: IAM → Roles → **BtpProductionImageDeployment** → Permissions → existing deployment policy → Edit → JSON → replace with current `infra/iam/github-deploy-permissions.json` → Save/default version. Leave trust/provider/Dev_1/boundaries unchanged; no duplicate/broad policies. Confirm saved. Then rerun the read-only diagnostic and require exact successful new-commit CI before another deployment. Earlier completed read/trust/provider steps below are history, not requests to repeat them.
+
 ## Required read-only change-set correction (21 October)
 
 OIDC authentication now succeeds after the administrator corrected the audience. Administrator's actual pasted permissions match the previous checked-in JSON, including `OnlyNamedApplicationChangeSets`. Real read-only diagnostic39639870775 is denied `cloudformation:DescribeChangeSet` on the exact existing stack, with no identity-based allow. Thus this is not a missing action or incorrect stack ARN. The extra ChangeSetName condition is the leading mismatch inferred from those facts; the service does not expose its evaluated condition context here. Do not claim this inference rules out other controls or is already verified fixed.

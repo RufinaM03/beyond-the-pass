@@ -49,4 +49,6 @@ jobs:
               raise SystemExit('Invalid project change-set name')
           response = json.loads(aws('cloudformation', 'describe-change-set', '--stack-name', 'btp-demo-app', '--change-set-name', name))
           print(json.dumps({key: response[key] for key in ['ChangeSetId', 'Status', 'ExecutionStatus']}))
+          zones = json.loads(aws('ec2', 'describe-availability-zones'))
+          print(json.dumps({'availability_zone_read': True, 'zone_count': len(zones['AvailabilityZones'])}))
           PY

@@ -91,6 +91,8 @@ jobs:
           retry-max-attempts: 3
           allowed-account-ids: '044854093109'
           mask-aws-account-id: false
+      - name: Preflight read required by existing typed Availability Zone parameters
+        run: aws ec2 describe-availability-zones --region ap-south-1 --query 'length(AvailabilityZones)' --output json
       - name: Locked serving dependencies
         run: |
           python -m pip install --only-binary=:all: -r requirements-app.lock
