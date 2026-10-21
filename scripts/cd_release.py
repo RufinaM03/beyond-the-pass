@@ -27,12 +27,24 @@ BASE = "https://d1qxms20novn1p.cloudfront.net"
 ARTIFACTS = json.loads((ROOT / "docs/cd-artifacts.json").read_text())
 
 
+def safe_aws_error(stderr):
+    return {
+        "actions": sorted(set(re.findall(r"(?<![:\w])(?:cloudformation|ecs|ecr|iam|s3|elasticloadbalancing):[A-Z][A-Za-z]+\b", stderr))),
+        "resources": sorted(set(re.findall(r"arn:aws:(?:sts|iam|cloudformation|ecs|ecr|elasticloadbalancing):[A-Za-z0-9_:/.*@-]+", stderr))),
+        "no_identity_allow": "no identity-based policy allows" in stderr,
+        "explicit_deny": "explicit deny" in stderr.lower(),
+        "boundary_mentioned": "permissions boundary" in stderr.lower(),
+        "account_control_mentioned": "service control policy" in stderr.lower(),
+    }
+
+
 def run(arguments, input_text=None):
     result = subprocess.run(arguments, input=input_text, text=True, capture_output=True, cwd=ROOT, timeout=2400)
     if result.returncode:
         code = re.search(r"An error occurred \(([A-Za-z0-9]+)\)", result.stderr)
         operation = " ".join(arguments[:3] if arguments[0] == "aws" else arguments[:2])
-        raise RuntimeError(f"{operation} failed (exit {result.returncode}, code {code.group(1) if code else 'unavailable'}); no secret-bearing response emitted")
+        details = json.dumps(safe_aws_error(result.stderr)) if arguments[0] == "aws" else "{}"
+        raise RuntimeError(f"{operation} failed (exit {result.returncode}, code {code.group(1) if code else 'unavailable'}); safe diagnostic: {details}")
     return result.stdout.strip()
 
 

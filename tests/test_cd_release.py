@@ -13,6 +13,19 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_aws_denial_diagnostic_omits_secret_bearing_text(self):
+        message = ('User: arn:aws:sts::044854093109:assumed-role/BtpProductionImageDeployment/fixture '
+                   'is not authorized to perform: cloudformation:DescribeChangeSet on resource: '
+                   'arn:aws:cloudformation:ap-south-1:044854093109:stack/btp-demo-app/fixture '
+                   'because no identity-based policy allows the cloudformation:DescribeChangeSet action; '
+                   'OriginHeader=synthetic-secret-must-not-appear')
+        diagnostic = cd.safe_aws_error(message)
+        self.assertEqual(diagnostic['actions'], ['cloudformation:DescribeChangeSet'])
+        self.assertTrue(diagnostic['no_identity_allow'])
+        self.assertEqual(len(diagnostic['resources']), 2)
+        self.assertNotIn('synthetic-secret', json.dumps(diagnostic))
+        self.assertFalse(diagnostic['explicit_deny'])
+
     def test_actual_immutable_subject_contract_rejects_legacy_or_customized_trust(self):
         trust = json.loads((cd.ROOT / "infra/iam/github-deploy-trust.json").read_text())
         settings = {"use_default": True, "use_immutable_subject": True,

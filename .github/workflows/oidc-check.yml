@@ -2,6 +2,11 @@ name: Diagnose AWS OIDC
 
 on:
   workflow_dispatch:
+    inputs:
+      change_set:
+        description: 'Optional existing btp-cd-* change set to inspect read-only; never execute'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -21,3 +26,27 @@ jobs:
           node-version: '24.15.0'
       - name: Inspect only safe booleans and STS error codes; never log tokens or credentials
         run: node scripts/oidc-diagnostic.mjs
+      - name: Read-only diagnostic session when explicitly requested
+        if: inputs.change_set != ''
+        uses: aws-actions/configure-aws-credentials@fcce761380b9c34becc2ebd00e0d8c8f4d1e1448
+        with:
+          role-to-assume: arn:aws:iam::044854093109:role/BtpProductionImageDeployment
+          role-session-name: btp-read-diagnostic-${{ github.run_id }}
+          aws-region: ap-south-1
+          role-duration-seconds: 900
+          retry-max-attempts: 1
+          allowed-account-ids: '044854093109'
+      - name: Inspect existing change-set status only; redact parameters and denial details
+        if: inputs.change_set != ''
+        env:
+          CHANGE_SET: ${{ inputs.change_set }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from scripts.cd_release import aws
+          name = os.environ['CHANGE_SET']
+          if not re.fullmatch(r'btp-cd-[a-f0-9]{16}-[0-9]{14}', name):
+              raise SystemExit('Invalid project change-set name')
+          response = json.loads(aws('cloudformation', 'describe-change-set', '--stack-name', 'btp-demo-app', '--change-set-name', name))
+          print(json.dumps({key: response[key] for key in ['ChangeSetId', 'Status', 'ExecutionStatus']}))
+          PY
