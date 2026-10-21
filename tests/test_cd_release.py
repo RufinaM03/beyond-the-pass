@@ -13,6 +13,19 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_change_set_read_is_exact_stack_scoped_without_write_name_condition(self):
+        policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
+        statements = {entry['Sid']: entry for entry in policy['Statement']}
+        read = statements['ReadOnlyExistingStack']
+        write = statements['OnlyNamedApplicationChangeSets']
+        stack = 'arn:aws:cloudformation:ap-south-1:044854093109:stack/btp-demo-app/8e6e41c0-cc4b-11f1-b4c7-02fff94de1e3'
+        self.assertEqual(read['Resource'], stack)
+        self.assertEqual(write['Resource'], stack)
+        self.assertIn('cloudformation:DescribeChangeSet', read['Action'])
+        self.assertEqual(read['Condition'], {'StringEquals': {'aws:RequestedRegion': 'ap-south-1'}})
+        self.assertEqual(set(write['Action']), {'cloudformation:CreateChangeSet', 'cloudformation:ExecuteChangeSet', 'cloudformation:DeleteChangeSet'})
+        self.assertEqual(write['Condition']['StringLike'], {'cloudformation:ChangeSetName': 'btp-cd-*'})
+
     def test_aws_denial_diagnostic_omits_secret_bearing_text(self):
         message = ('User: arn:aws:sts::044854093109:assumed-role/BtpProductionImageDeployment/fixture '
                    'is not authorized to perform: cloudformation:DescribeChangeSet on resource: '
