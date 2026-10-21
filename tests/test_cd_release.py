@@ -13,6 +13,17 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_existing_distribution_output_read_is_exact_and_cloudformation_only(self):
+        policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
+        read = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ReadExistingDistributionOutputViaCloudFormation')
+        self.assertEqual(read['Action'], ['cloudfront:GetDistribution'])
+        self.assertEqual(read['Resource'], 'arn:aws:cloudfront::044854093109:distribution/E2KD3NUMXZ0BRD')
+        self.assertEqual(read['Condition'], {'ForAnyValue:StringEquals': {'aws:CalledVia': 'cloudformation.amazonaws.com'}})
+        cloudfront_actions = {action for entry in policy['Statement'] for action in entry['Action'] if action.startswith('cloudfront:')}
+        self.assertEqual(cloudfront_actions, {'cloudfront:GetDistribution'})
+        template = json.loads((cd.ROOT / 'infra/application.json').read_text())
+        self.assertEqual(template['Outputs']['CloudFrontUrl']['Value']['Fn::Sub'], 'https://${Distribution.DomainName}')
+
     def test_typed_availability_zone_validation_adds_only_regional_discovery(self):
         policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
         discovery = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ValidateExistingAvailabilityZoneParameters')

@@ -1,5 +1,11 @@
 # Application rollout and continuous deployment
 
+## Latest blocker — stack output resolution after intermediate rollout
+
+[Deployment39642818664](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39642818664) proves zone-read fix and updates Task:3/Service, but CloudFormation cannot retrieve existing Distribution.DomainName at final output evaluation (access failure), then rolls back. The unchanged CloudFrontUrl output needs that attribute even for image-only changes. No CloudFront read exists in prior deployment policy. Intermediate Service success is not accepted deployment; automatic CD remains disabled.
+
+Prepared only CloudFormation-forwarded cloudfront:GetDistribution on exact E2KD3NUMXZ0BRD, no direct configuration reads, mutations/listing/invalidation or architecture/template changes. GetDistribution includes origin configuration to CloudFormation; scope disclosed for administrator review, responses/header values never logged or persisted. Minimal grant sufficiency pending actual final successful stack update. Administrator must save current permissions JSON; wait for rollback and exact new CI before retry. Existing original image/previous identity retained. No agent IAM changes/S3 writes/new service/model changes/teardown.
+
 ## Latest outcome — read fixed; deployment rolled back at typed-parameter validation
 
 Administrator-applied DescribeChangeSet correction is verified by [read-only39641124076](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39641124076). [Actual retry39641279971](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39641279971) passed real container/publication and executed the reviewed Task/Service-only change set, but stack rolled back immediately: AccessDenied on EC2 DescribeAvailabilityZones, before resource update events. Existing AWS::EC2::AvailabilityZone::Name parameters require that read despite previous values/unchanged networking. Stack UPDATE_ROLLBACK_COMPLETE, original task:2 one healthy running instance, public ready; feature and automatic CD still not accepted. Record `data/tmp/cd-39641279971/production-release.json`, image digest92361f7684347dc8b858e29fa9e49f471833bc1408b16d0fe0132a7730752413.
