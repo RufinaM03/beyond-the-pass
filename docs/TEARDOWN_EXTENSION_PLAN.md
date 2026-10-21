@@ -1,5 +1,11 @@
 # Teardown behavior and minimal extension proposal
 
+## Current hosting decision — supersedes the historical proposal below
+
+On **22October2026IST**, user requested **at least two weeks** of hosting. Retain the current existing deployment until at least **5November2026 00:01:05IST** (14days from recorded2026-10-21T18:31:05Z checkpoint); do not schedule deletion at that time or stop/delete without subsequent explicit user instruction. The previous21October deadline and infrastructure pause below are superseded. No project automatic teardown exists; no timestamp-driven AWS change is needed to keep the service running. No new service, IAM change, S3 write, model replacement, stack recreation or budget-alert change is made. Using documented~$1.57/day low-traffic assumptions,14days is approximately$22before tax, not a hard cap or actual billing statement. Extra traffic/storage and ongoing hosting afterward remain billable.
+
+Everything below records the earlier inspection/proposal, not current authorization to run deletion.
+
 Prepared **21 October 2026 IST** after the user instructed **no infrastructure changes yet**. This instruction pauses the previously approved application update. No ECR push, S3 write, change-set creation/execution, IAM mutation, stack deletion or application deployment occurred. GitHub update is complete: commit `cdd3680e14963019a23e5de572c0cd3ad95b8d24`, [successful exact-commit CI](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39480516113). Local suite91 Python tests and4 frontend tests pass. The AWS application still runs original task definition `btp-demo-app-app:2`, desired1/running1/pending0.
 
 ## 1. What causes teardown

@@ -1,5 +1,9 @@
 # Decisions
 
+## Minimum hosting period (22 October 2026 IST)
+
+User requests at least two weeks. Retain the existing deployment through at least **5 November 2026 00:01:05 IST**,14days after recorded request checkpoint. This is a minimum retention window, **not an automatic teardown time**; leave running afterward until explicit user stop/delete instructions. Older21October manual deadlines are superseded. No scheduler, AWS architecture/IAM/S3/model/budget changes required. Existing documented~$1.57/day planning estimate gives~$22before tax over14days, not actual billing or a cap.
+
 ## Manual prediction addition (2026-10-20)
 
 Use only the four existing frozen predictors and inference path; manual scope confirmation is mandatory. Miles follow verified 2022 training-source correction, with later-release uncertainty disclosed. Null age/mileage use frozen handling, never zero-fill; date is calendar-window context only. No recurrence input, personal identifiers, submission persistence, manual queue ranking or evaluation changes. Preserve trusted hashes and exact numerical comparison policy. Verify local/Docker before any cloud update; existing deployment pins, publication scope, exact CI and original hosting deadline remain gates. No new AWS authorization or lifetime extension inferred.
