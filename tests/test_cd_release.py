@@ -13,6 +13,26 @@ from scripts import cd_release as cd
 
 
 class CdReleaseTests(unittest.TestCase):
+    def test_all_existing_attribute_outputs_have_audited_read_permissions(self):
+        policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
+        read = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ReadLoadBalancerOutputViaCloudFormation')
+        self.assertEqual(read['Action'], ['elasticloadbalancing:DescribeLoadBalancers'])
+        self.assertEqual(read['Resource'], '*')
+        self.assertEqual(read['Condition'], {'StringEquals': {'aws:RequestedRegion': 'ap-south-1'},
+                                           'ForAnyValue:StringEquals': {'aws:CalledVia': 'cloudformation.amazonaws.com'}})
+        template = json.loads((cd.ROOT / 'infra/application.json').read_text())
+        outputs = {name: entry['Value'] for name, entry in template['Outputs'].items()}
+        self.assertEqual(outputs, {
+            'AlbDns': {'Fn::GetAtt': ['Alb', 'DNSName']},
+            'Service': {'Fn::GetAtt': ['Service', 'Name']},
+            'CloudFrontUrl': {'Fn::Sub': 'https://${Distribution.DomainName}'},
+            **{name: {'Ref': reference} for name, reference in {
+                'Cluster': 'Cluster', 'TaskDefinition': 'Task', 'TargetGroup': 'Targets',
+                'TaskSecurityGroup': 'TaskGroup', 'Logs': 'Logs', 'ImageUri': 'ImageUri', 'CodeVersion': 'CodeVersion'}.items()},
+        })
+        actions = {action for entry in policy['Statement'] for action in entry['Action']}
+        self.assertTrue({'elasticloadbalancing:DescribeLoadBalancers', 'ecs:DescribeServices', 'cloudfront:GetDistribution'} <= actions)
+
     def test_existing_distribution_output_read_is_exact_and_cloudformation_only(self):
         policy = json.loads((cd.ROOT / 'infra/iam/github-deploy-permissions.json').read_text())
         read = next(entry for entry in policy['Statement'] if entry['Sid'] == 'ReadExistingDistributionOutputViaCloudFormation')

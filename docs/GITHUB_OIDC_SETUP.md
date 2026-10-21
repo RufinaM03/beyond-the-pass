@@ -1,5 +1,24 @@
 # GitHub deployment identity: review before applying
 
+## Current correction — ALB output read; all output expressions audited
+
+Deployment39647479535 passed the CloudFront output read but rolled back at **Alb.DNSName**: AWS explicitly denies **elasticloadbalancing:DescribeLoadBalancers** to BtpProductionImageDeployment with no identity-based allow. Read-only inspection identified the action, principal and attribute without emitting any full resource configuration/header. No additional CloudFront permission is proposed.
+
+Current JSON adds only DescribeLoadBalancers, **Resource:* / Mumbai / CalledVia CloudFormation**. [AWS ELBv2 authorization reference](https://docs.aws.amazon.com/service-authorization/latest/reference/list_elbv2.html) lists no resource ARN support for this action. Therefore IAM cannot confine this read to the project ALB; it permits regional load-balancer metadata only through CloudFormation, not direct workflow discovery. No listener/rule reads (origin-header secret), writes, new services or other discovery. All existing statements unchanged. Administrator: update the same role's existing permissions policy from current `infra/iam/github-deploy-permissions.json`, save/default it; leave trust/provider/Dev_1/boundaries unchanged. Confirm before retry.
+
+Audited **all 10 existing Outputs** and typed parameters rather than assuming image-only updates skip unchanged output dependencies:
+
+| Expression | Read dependency / existing scope |
+| --- | --- |
+| Alb.DNSName | DescribeLoadBalancers, proposed Mumbai/CloudFormation-only wildcard as required by AWS |
+| Distribution.DomainName | GetDistribution, exact project distribution/CloudFormation-only; prior correction now passes |
+| Service.Name | DescribeServices, existing exact ECS service/Mumbai grant |
+| Cluster, Task, Targets, TaskGroup, Logs Ref | Existing physical IDs, not new GetAtt expressions; existing ECS health/task reads retained |
+| ImageUri, CodeVersion Ref | Previous/new parameter values, no additional service read |
+| AvailabilityZoneA/B typed parameters | DescribeAvailabilityZones, Mumbai read already verified |
+
+Regression test pins these output expressions and required actions so new attribute dependencies require deliberate review. This audit is not an assertion that every future provider call is known: full final stack completion and health remain the acceptance checks. Do not preemptively grant broad service reads, remove outputs or change the application template. Earlier completed correction sections below are history.
+
 ## Latest correction — existing CloudFront output read through CloudFormation only
 
 Actual deployment39642818664 verifies the zone-read fix and succeeds at Task revision3 and Service update. At final stack-output evaluation CloudFormation cannot retrieve **AWS::CloudFront::Distribution DomainName**, with access failure, then automatically rolls back. Existing `CloudFrontUrl` output references `${Distribution.DomainName}` even though the distribution is unchanged. No CloudFront permission exists in the previous deployment role. Do not remove the output, change networking or broaden to CloudFrontFullAccess.

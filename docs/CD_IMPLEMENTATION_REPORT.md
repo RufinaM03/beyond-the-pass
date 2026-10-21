@@ -1,5 +1,11 @@
 # Application rollout and continuous deployment
 
+## Latest result — CloudFront read passes; ALB output read denied
+
+[Deployment39647479535](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39647479535) at CI-passed71d39a progresses through Task/Service update but rolls back resolving **Alb.DNSName**: exact action elasticloadbalancing:DescribeLoadBalancers, no identity-based allow for deployment role. CloudFront correction no longer the observed blocker. Intermediate service success remains insufficient; automatic CD disabled.
+
+Prepared only Mumbai/CloudFormation-forwarded DescribeLoadBalancers, required Resource:* per official ELBv2 action support. No listener/rule read, direct workflow discovery or ELB write. Existing permissions unchanged. Audited all10 Outputs plus typed parameters and added regression test; detailed table/admin steps GITHUB_OIDC_SETUP.md. Final successful stack completion still required; no claim this audit proves every provider call. Wait for rollback completion, administrator save and exact new CI before retry. No agent IAM mutation, new service, template/model/S3 change or teardown.
+
 ## Latest blocker — stack output resolution after intermediate rollout
 
 [Deployment39642818664](https://github.com/RufinaM03/beyond-the-pass/actions/runs/39642818664) proves zone-read fix and updates Task:3/Service, but CloudFormation cannot retrieve existing Distribution.DomainName at final output evaluation (access failure), then rolls back. The unchanged CloudFrontUrl output needs that attribute even for image-only changes. No CloudFront read exists in prior deployment policy. Intermediate Service success is not accepted deployment; automatic CD remains disabled.
